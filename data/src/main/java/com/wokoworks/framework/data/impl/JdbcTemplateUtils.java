@@ -29,7 +29,7 @@ public class JdbcTemplateUtils<T> {
     public final int findCount(CharSequence sql, Object... args) {
         Integer count = jdbcTemplate.query(sql.toString(), args, rs -> {
             if (rs.next()) {
-                rs.getInt(1);
+                return rs.getInt(1);
             }
             return 0;
         });

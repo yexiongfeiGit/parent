@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: "jdbc:h2:mem:data_test;MODE=MySQL"
+    driver-class-name: org.h2.Driver
+logging:
+  level:
+    root: info
+    # show sql
+    com.wokoworks.framework.data.impl: debug
+    org.springframework.jdbc.core: debug

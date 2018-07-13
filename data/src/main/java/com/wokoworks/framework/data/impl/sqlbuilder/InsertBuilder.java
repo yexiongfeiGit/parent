@@ -19,7 +19,6 @@ import java.util.Map;
  */
 @Slf4j
 public final class InsertBuilder<T, K> {
-    private final BaseRepositoryImpl<T, K> repository;
     private final String idColumnName;
     private final String tableName;
     private final TableInfo<T, K> tableInfo;
@@ -28,11 +27,10 @@ public final class InsertBuilder<T, K> {
     private boolean ignoreIdColumn = true;
 
     public InsertBuilder(BaseRepositoryImpl<T, K> repository) {
-        this.repository = repository;
-        idColumnName = this.repository.getIdColumnName();
-        tableName = this.repository.getTableName();
+        idColumnName = repository.getIdColumnName();
+        tableName = repository.getTableName();
         tableInfo = TableInfo.newTableInfo(repository);
-        jdbcTemplate = this.repository.getJdbcTemplate();
+        jdbcTemplate = repository.getJdbcTemplate();
     }
 
     public InsertBuilder<T, K> setIgnoreIdColumn(boolean ignoreIdColumn) {

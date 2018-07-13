@@ -29,6 +29,7 @@
         <java.version>1.8</java.version>
 
         <guava.version>25.1-jre</guava.version>
+        <dbunit.version>2.5.4</dbunit.version>
     </properties>
 
     <dependencyManagement>
@@ -43,6 +44,12 @@
                 <groupId>com.wokoworks.framework</groupId>
                 <artifactId>commons</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dbunit</groupId>
+                <artifactId>dbunit</artifactId>
+                <version>${dbunit.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
