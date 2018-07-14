@@ -10,6 +10,10 @@ import java.util.stream.Stream;
  */
 public final class RandomUtils {
 
+    private RandomUtils() {
+        throw new UnsupportedOperationException();
+    }
+
     /**
      * 数字
      */

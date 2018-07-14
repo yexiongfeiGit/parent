@@ -8,11 +8,11 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public class Pair<First, Second> {
-    private final First first;
-    private final Second second;
+public class Pair<F, S> {
+    private final F first;
+    private final S second;
 
-    public static  <First, Second> Pair<First, Second> of(First first, Second second) {
+    public static  <F, S> Pair<F, S> of(F first, S second) {
         return new Pair<>(first, second);
     }
 

@@ -9,6 +9,10 @@ import java.util.Collection;
  * @author 0x0001
  */
 public final class Conditions {
+    private Conditions() {
+        throw new UnsupportedOperationException();
+    }
+
     public static Condition equals(String field, Object arg) {
         return new SimpleCondition(field, Opt.EQ, arg);
     }

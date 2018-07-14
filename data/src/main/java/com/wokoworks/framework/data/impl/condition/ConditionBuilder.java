@@ -13,8 +13,8 @@ public final class ConditionBuilder {
     private Condition condition;
 
     public void where(String where, Object... args) {
-        final RawCondition condition = new RawCondition(where, args);
-        this.condition = Objects.isNull(this.condition) ? condition : this.condition.and(condition);
+        final RawCondition rawCondition = new RawCondition(where, args);
+        this.condition = Objects.isNull(this.condition) ? rawCondition : this.condition.and(rawCondition);
     }
 
     public void where(Condition condition) {

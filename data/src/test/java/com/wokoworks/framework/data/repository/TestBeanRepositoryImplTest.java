@@ -369,4 +369,96 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertTrue("equals ", name.equals(bean.getName()) || age == bean.getAge());
         }
     }
+
+    @Test
+    public void findByNameAndAge() {
+        // 能查询到的情况
+        {
+            final String name = "小明";
+            final int age = 28;
+            final List<TestBean> beans = testBeanRepository.findByNameAndAge(name, age);
+            Assert.assertEquals("bean size", 1, beans.size());
+
+            for (TestBean bean : beans) {
+                Assert.assertTrue("equals ", name.equals(bean.getName()) && age == bean.getAge());
+            }
+        }
+
+        // 查询不到的情况
+        {
+            final String name = "小明";
+            final int age = 29;
+            final List<TestBean> beans = testBeanRepository.findByNameAndAge(name, age);
+            Assert.assertEquals("bean size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByAgeLessThen() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeLessThen(28);
+            Assert.assertEquals("record size", 2, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("age < 28", bean.getAge() < 28);
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeLessThen(18);
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByAgeLessThenEqual() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeLessThenEqual(18);
+            Assert.assertEquals("record size", 1, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("age <= 18", bean.getAge() <= 18);
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeLessThenEqual(17);
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByAgeGreaterThen() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeGreaterThen(18);
+            Assert.assertEquals("record size", 2, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("age >= 18", bean.getAge() >= 18);
+            }
+        }
+
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeGreaterThen(28);
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByAgeGreaterThenEqual() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeGreaterThenEqual(18);
+            Assert.assertEquals("record size", 3, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("age >= 18", bean.getAge() >= 18);
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByAgeGreaterThenEqual(29);
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
 }

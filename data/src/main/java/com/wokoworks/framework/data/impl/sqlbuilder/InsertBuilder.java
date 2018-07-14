@@ -1,10 +1,9 @@
 package com.wokoworks.framework.data.impl.sqlbuilder;
 
 import com.wokoworks.framework.data.impl.BaseRepositoryImpl;
+import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.*;
-import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.jdbc.support.KeyHolder;
 
 import javax.annotation.Nonnull;
@@ -21,7 +20,7 @@ import java.util.Map;
 public final class InsertBuilder<T, K> {
     private final String idColumnName;
     private final String tableName;
-    private final TableInfo<T, K> tableInfo;
+    private final TableInfo<T> tableInfo;
     private final JdbcTemplate jdbcTemplate;
 
     private boolean ignoreIdColumn = true;
@@ -73,11 +72,9 @@ public final class InsertBuilder<T, K> {
         StringBuilder sqlBuilder = new StringBuilder("INSERT INTO ").append(tableName).append("(");
 
         for (String columnName : columnNames) {
-            if (ignoreIdColumn) {
-                // skip id column
-                if (columnName.equalsIgnoreCase(idColumnName)) {
-                    continue;
-                }
+            // skip id column
+            if (ignoreIdColumn && columnName.equalsIgnoreCase(idColumnName)) {
+                continue;
             }
             sqlBuilder.append(columnName).append(",");
         }
@@ -85,7 +82,7 @@ public final class InsertBuilder<T, K> {
         sqlBuilder.append(" VALUES (");
         for (String columnName : columnNames) {
             // skip id column
-            if (columnName.equalsIgnoreCase(idColumnName)) {
+            if (ignoreIdColumn && columnName.equalsIgnoreCase(idColumnName)) {
                 continue;
             }
             sqlBuilder.append("?,");
@@ -97,11 +94,9 @@ public final class InsertBuilder<T, K> {
     private Object[] generatorArgs(T data, List<String> columnNames) {
         List<Object> args = new ArrayList<>(columnNames.size());
         for (String columnName : columnNames) {
-            if (ignoreIdColumn) {
-                // skip id column
-                if (columnName.equalsIgnoreCase(idColumnName)) {
-                    continue;
-                }
+            // skip id column
+            if (ignoreIdColumn && columnName.equalsIgnoreCase(idColumnName)) {
+                continue;
             }
             args.add(tableInfo.getValueByColumnName(data, columnName));
         }
@@ -121,8 +116,8 @@ public final class InsertBuilder<T, K> {
         }
 
         @Override
-        public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-            PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        public PreparedStatement createPreparedStatement(@NonNull Connection con) throws SQLException {
+            final PreparedStatement preparedStatement = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             int i = 1;
             for (Object arg : args) {
                 preparedStatement.setObject(i++, arg);
@@ -144,31 +139,28 @@ public final class InsertBuilder<T, K> {
         }
 
         @Override
-        public int[] doInConnection(@Nonnull Connection conn) throws SQLException, DataAccessException {
-            PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            for (Object[] args : argList) {
-                int i = 1;
-                for (Object arg : args) {
-                    ps.setObject(i++, arg);
+        public int[] doInConnection(@Nonnull Connection conn) throws SQLException {
+            try (final PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+                for (Object[] args : argList) {
+                    int i = 1;
+                    for (Object arg : args) {
+                        ps.setObject(i++, arg);
+                    }
+                    ps.addBatch();
                 }
-                ps.addBatch();
-            }
-            int[] results = ps.executeBatch();
-            final List<Map<String, Object>> generatedKeys = keyHolder.getKeyList();
-            final ResultSet keys = ps.getGeneratedKeys();
-            if (keys != null) {
-                try {
+                int[] results = ps.executeBatch();
+                final List<Map<String, Object>> generatedKeys = keyHolder.getKeyList();
+                try (final ResultSet keys = ps.getGeneratedKeys()) {
                     RowMapperResultSetExtractor<Map<String, Object>> rse =
                         new RowMapperResultSetExtractor<>(new ColumnMapRowMapper(), 1);
                     generatedKeys.addAll(rse.extractData(keys));
-                } finally {
-                    JdbcUtils.closeResultSet(keys);
                 }
+
+                if (log.isDebugEnabled()) {
+                    log.debug("SQL update affected  {} rows and returned {} keys", results, generatedKeys.size());
+                }
+                return results;
             }
-            if (log.isDebugEnabled()) {
-                log.debug("SQL update affected  {} rows and returned {} keys", results, generatedKeys.size());
-            }
-            return results;
         }
     }
 

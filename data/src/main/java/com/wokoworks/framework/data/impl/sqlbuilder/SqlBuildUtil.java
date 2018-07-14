@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Optional;
 
 final class SqlBuildUtil {
+    private SqlBuildUtil() {
+        throw new UnsupportedOperationException();
+    }
+
     static Optional<Pair<String, List<Object>>> buildCondition(ConditionBuilder conditionBuilder) {
         if (conditionBuilder.hasCondition()) {
             final StringBuilder sql = new StringBuilder();

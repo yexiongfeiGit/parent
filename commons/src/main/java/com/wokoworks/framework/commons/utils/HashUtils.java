@@ -14,11 +14,17 @@ public final class HashUtils {
         throw new UnsupportedOperationException("not support");
     }
 
+    /**
+     * @deprecated md5 算法不再安全,推荐使用sha256之类算法替代, 密码计算推荐使用 bcrypt之类的方式替换
+     */
     @Deprecated
     public static String md5(CharSequence chars) {
         return toHexHash(Hashing.md5(), chars);
     }
 
+    /**
+     * @deprecated sha1 算法不再安全,推荐使用sha256之类算法替代, 密码计算推荐使用 bcrypt之类的方式替换
+     */
     @Deprecated
     public static String sha1(CharSequence chars) {
         return toHexHash(Hashing.sha1(), chars);

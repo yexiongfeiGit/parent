@@ -31,4 +31,29 @@ public class TestBeanRepositoryImpl extends BaseRepositoryImpl<TestBean, Integer
         return select().where(Conditions.equals("name", name).or(Conditions.equals("age", age)))
             .find();
     }
+
+    @Override
+    public List<TestBean> findByNameAndAge(String name, int age) {
+        return select().where("name = ? AND age = ?", name, age).find();
+    }
+
+    @Override
+    public List<TestBean> findByAgeLessThen(int age) {
+        return select().where(Conditions.lessThen("age", age)).find();
+    }
+
+    @Override
+    public List<TestBean> findByAgeLessThenEqual(int age) {
+        return select().where(Conditions.lessThanEquals("age", age)).find();
+    }
+
+    @Override
+    public List<TestBean> findByAgeGreaterThen(int age) {
+        return select().where(Conditions.greaterThen("age", age)).find();
+    }
+
+    @Override
+    public List<TestBean> findByAgeGreaterThenEqual(int age) {
+        return select().where(Conditions.greaterThanEquals("age", age)).find();
+    }
 }

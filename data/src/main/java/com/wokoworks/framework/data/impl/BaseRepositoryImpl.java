@@ -60,14 +60,6 @@ public abstract class BaseRepositoryImpl<T, K> implements BaseRepository<T, K>, 
     // --------------------------- abstract methods
 
     /**
-     * 获取表名
-     *
-     * @return
-     */
-    @Override
-    public abstract String getTableName();
-
-    /**
      * 获取bean类
      *
      * @return
