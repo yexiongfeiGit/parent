@@ -77,7 +77,7 @@ public abstract class BaseRepositoryImpl<T, K> implements BaseRepository<T, K>, 
         if (ids == null || ids.isEmpty()) {
             return new ArrayList<>();
         }
-        return select().where(Conditions.in(idColumnName, ids.toArray())).find();
+        return select().where(Conditions.in(idColumnName, ids)).find();
     }
 
     @Override

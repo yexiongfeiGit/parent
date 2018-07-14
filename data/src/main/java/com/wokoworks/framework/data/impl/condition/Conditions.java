@@ -1,6 +1,7 @@
 package com.wokoworks.framework.data.impl.condition;
 
 
+import com.google.common.base.Preconditions;
 import com.wokoworks.framework.data.Condition;
 
 import java.util.Collection;
@@ -47,5 +48,27 @@ public final class Conditions {
 
     public static Condition notIn(String field, Collection<?> args) {
         return notIn(field, args.toArray());
+    }
+
+    public static Condition or(Condition... conditions) {
+        Preconditions.checkNotNull(conditions);
+        Preconditions.checkArgument(conditions.length > 0);
+
+        Condition condition = conditions[0];
+        for (int i = 1; i < conditions.length; i++) {
+            condition = ComplexCondition.or(condition, conditions[i]);
+        }
+        return condition;
+    }
+
+    public static Condition and(Condition... conditions) {
+        Preconditions.checkNotNull(conditions);
+        Preconditions.checkArgument(conditions.length > 0);
+
+        Condition condition = conditions[0];
+        for (int i = 1; i < conditions.length; i++) {
+            condition = ComplexCondition.and(condition, conditions[i]);
+        }
+        return condition;
     }
 }

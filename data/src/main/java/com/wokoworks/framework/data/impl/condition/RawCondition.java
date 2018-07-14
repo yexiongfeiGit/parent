@@ -19,14 +19,4 @@ class RawCondition implements Condition {
     public String getSql() {
         return condition;
     }
-
-    @Override
-    public Condition or(Condition condition) {
-        return ComplexCondition.or(this, condition);
-    }
-
-    @Override
-    public Condition and(Condition condition) {
-        return ComplexCondition.and(this, condition);
-    }
 }

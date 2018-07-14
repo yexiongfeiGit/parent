@@ -58,16 +58,6 @@ class ComplexCondition implements Condition {
         return args.toArray();
     }
 
-    @Override
-    public Condition or(Condition condition) {
-        return ComplexCondition.or(this, condition);
-    }
-
-    @Override
-    public Condition and(Condition condition) {
-        return ComplexCondition.and(this, condition);
-    }
-
     static ComplexCondition or(Condition first, Condition second) {
         return new ComplexCondition(first, true, second);
     }

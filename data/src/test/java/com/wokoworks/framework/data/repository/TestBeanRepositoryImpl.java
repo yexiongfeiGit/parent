@@ -28,13 +28,18 @@ public class TestBeanRepositoryImpl extends BaseRepositoryImpl<TestBean, Integer
 
     @Override
     public List<TestBean> findByNameOrAge(String name, int age) {
-        return select().where(Conditions.equals("name", name).or(Conditions.equals("age", age)))
+        return select().where(Conditions.or(Conditions.equals("name", name), Conditions.equals("age", age)))
             .find();
     }
 
     @Override
     public List<TestBean> findByNameAndAge(String name, int age) {
         return select().where("name = ? AND age = ?", name, age).find();
+    }
+
+    @Override
+    public List<TestBean> findByNameAndAge1(String name, int age) {
+        return select().where(Conditions.and(Conditions.equals("name", name), Conditions.equals("age", age))).find();
     }
 
     @Override

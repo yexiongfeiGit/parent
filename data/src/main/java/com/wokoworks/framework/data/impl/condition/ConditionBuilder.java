@@ -14,11 +14,11 @@ public final class ConditionBuilder {
 
     public void where(String where, Object... args) {
         final RawCondition rawCondition = new RawCondition(where, args);
-        this.condition = Objects.isNull(this.condition) ? rawCondition : this.condition.and(rawCondition);
+        this.condition = Objects.isNull(this.condition) ? rawCondition : Conditions.and(this.condition, rawCondition);
     }
 
     public void where(Condition condition) {
-        this.condition = Objects.isNull(this.condition) ? condition : this.condition.and(condition);
+        this.condition = Objects.isNull(this.condition) ? condition : Conditions.and(this.condition, condition);
     }
 
     public boolean hasCondition() {

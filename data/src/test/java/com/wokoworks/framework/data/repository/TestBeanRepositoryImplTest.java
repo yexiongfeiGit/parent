@@ -394,6 +394,29 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
     }
 
     @Test
+    public void findByNameAndAge1() {
+        // 能查询到的情况
+        {
+            final String name = "小明";
+            final int age = 28;
+            final List<TestBean> beans = testBeanRepository.findByNameAndAge1(name, age);
+            Assert.assertEquals("bean size", 1, beans.size());
+
+            for (TestBean bean : beans) {
+                Assert.assertTrue("equals ", name.equals(bean.getName()) && age == bean.getAge());
+            }
+        }
+
+        // 查询不到的情况
+        {
+            final String name = "小明";
+            final int age = 29;
+            final List<TestBean> beans = testBeanRepository.findByNameAndAge1(name, age);
+            Assert.assertEquals("bean size", 0, beans.size());
+        }
+    }
+
+    @Test
     public void findByAgeLessThen() {
         // 能查询到的情况
         {

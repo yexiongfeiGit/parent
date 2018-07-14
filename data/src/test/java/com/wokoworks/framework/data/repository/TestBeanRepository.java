@@ -33,6 +33,16 @@ public interface TestBeanRepository extends BaseRepository<TestBean, Integer> {
      */
     List<TestBean> findByNameAndAge(String name, int age);
 
+
+    /**
+     * 通过名字和年龄查询
+     *
+     * @param name 需要查询到名字
+     * @param age  需要查询的年龄
+     * @return 符合条件的记录
+     */
+    List<TestBean> findByNameAndAge1(String name, int age);
+
     /**
      * 查询年龄小于指定值的对象
      *

@@ -55,16 +55,6 @@ class SimpleCondition implements Condition {
         getSql();
         return args.toArray();
     }
-
-    @Override
-    public Condition or(Condition condition) {
-        return ComplexCondition.or(this, condition);
-    }
-
-    @Override
-    public Condition and(Condition condition) {
-        return ComplexCondition.and(this, condition);
-    }
 }
 
 
