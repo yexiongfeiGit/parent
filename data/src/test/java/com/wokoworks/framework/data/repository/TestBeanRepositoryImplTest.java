@@ -36,17 +36,30 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
 
     @Test
     public void findInIds() {
-        final List<TestBean> beans = testBeanRepository.findInIds(Arrays.asList(1, 2, 100));
-        Assert.assertEquals("length equals", 2, beans.size());
+        {
+            {
+                final List<TestBean> beans = testBeanRepository.findInIds(null);
+                Assert.assertTrue("beans is empty", beans.isEmpty());
+            }
 
-        final Set<Integer> ids = beans.stream().map(TestBean::getId).collect(Collectors.toSet());
-        Assert.assertTrue("id check", ids.containsAll(Arrays.asList(1, 2)));
+            {
+                final List<TestBean> beans = testBeanRepository.findInIds(Collections.emptyList());
+                Assert.assertTrue("beans is empty", beans.isEmpty());
+            }
+        }
+        {
+            final List<TestBean> beans = testBeanRepository.findInIds(Arrays.asList(1, 2, 100));
+            Assert.assertEquals("length equals", 2, beans.size());
 
-        final Set<String> names = beans.stream().map(TestBean::getName).collect(Collectors.toSet());
-        Assert.assertTrue("name check", names.containsAll(Arrays.asList("小明", "小红")));
+            final Set<Integer> ids = beans.stream().map(TestBean::getId).collect(Collectors.toSet());
+            Assert.assertTrue("id check", ids.containsAll(Arrays.asList(1, 2)));
 
-        final Set<Integer> ages = beans.stream().map(TestBean::getAge).collect(Collectors.toSet());
-        Assert.assertTrue("age check", ages.containsAll(Arrays.asList(28, 18)));
+            final Set<String> names = beans.stream().map(TestBean::getName).collect(Collectors.toSet());
+            Assert.assertTrue("name check", names.containsAll(Arrays.asList("小明", "小红")));
+
+            final Set<Integer> ages = beans.stream().map(TestBean::getAge).collect(Collectors.toSet());
+            Assert.assertTrue("age check", ages.containsAll(Arrays.asList(28, 18)));
+        }
 
     }
 
@@ -239,6 +252,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total page", 3, page.getTotalPage());
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
+            Assert.assertEquals("page size", 1, page.getPageSize());
             Assert.assertEquals("content size", 1, page.getData().size());
         }
 
@@ -248,6 +262,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total page", 3, page.getTotalPage());
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 2, page.getCurrentPageNo());
+            Assert.assertEquals("page size", 1, page.getPageSize());
             Assert.assertEquals("content size", 1, page.getData().size());
         }
 
@@ -257,6 +272,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total page", 2, page.getTotalPage());
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
+            Assert.assertEquals("page size", 2, page.getPageSize());
             Assert.assertEquals("content size", 2, page.getData().size());
         }
 
@@ -266,6 +282,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total page", 1, page.getTotalPage());
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
+            Assert.assertEquals("page size", 3, page.getPageSize());
             Assert.assertEquals("content size", 3, page.getData().size());
         }
 
