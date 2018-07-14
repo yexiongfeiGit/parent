@@ -27,6 +27,8 @@ public class SelectBuilder<T> {
     private int offset;
     private int limit;
 
+    private boolean isTotalCount = false;
+
 
     public SelectBuilder(SqlExecuteProvider<T> sqlExecuteProvider) {
         tableName = sqlExecuteProvider.getTableName();
@@ -83,18 +85,23 @@ public class SelectBuilder<T> {
     }
 
     public int findCount() {
-        List<String> origFields = new ArrayList<>(this.fields);
-        fields.clear();
-        fields.add("COUNT(*)");
-        final int originLimit = limit;
-        this.limit(0);
-        final CharSequence sql = getSql();
+        isTotalCount = true;
         try {
-            return jdbcTemplateUtils.findCount(sql, getArgs());
+            List<String> origFields = new ArrayList<>(this.fields);
+            fields.clear();
+            fields.add("COUNT(*)");
+            final int originLimit = limit;
+            this.limit(0);
+            final CharSequence sql = getSql();
+            try {
+                return jdbcTemplateUtils.findCount(sql, getArgs());
+            } finally {
+                this.fields.clear();
+                this.fields.addAll(origFields);
+                this.limit(originLimit);
+            }
         } finally {
-            this.fields.clear();
-            this.fields.addAll(origFields);
-            this.limit(originLimit);
+            isTotalCount = false;
         }
     }
 
@@ -132,11 +139,13 @@ public class SelectBuilder<T> {
         SqlBuildUtil.buildCondition(conditionBuilder)
             .ifPresent(p -> SqlBuildUtil.append(sql, args, p));
 
-        // append order by
-        SqlBuildUtil.orderBy(sorts).ifPresent(sql::append);
+        if (!isTotalCount) {
+            // append order by
+            SqlBuildUtil.orderBy(sorts).ifPresent(sql::append);
 
-        // append limit
-        SqlBuildUtil.limit(offset, limit).ifPresent(p -> SqlBuildUtil.append(sql, args, p));
+            // append limit
+            SqlBuildUtil.limit(offset, limit).ifPresent(p -> SqlBuildUtil.append(sql, args, p));
+        }
 
         log.debug("sql: {}", sql);
 

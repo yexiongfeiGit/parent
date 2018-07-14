@@ -77,7 +77,7 @@ public abstract class BaseRepositoryImpl<T, K> implements BaseRepository<T, K>, 
 
     @Override
     public Optional<T> findById(K id) {
-        return select().where(Conditions.equal(idColumnName, id)).findOne();
+        return select().where(Conditions.equals(idColumnName, id)).findOne();
     }
 
     @Override
@@ -90,7 +90,7 @@ public abstract class BaseRepositoryImpl<T, K> implements BaseRepository<T, K>, 
 
     @Override
     public int deleteById(K id) {
-        return delete().where(Conditions.equal(idColumnName, id)).delete();
+        return delete().where(Conditions.equals(idColumnName, id)).delete();
     }
 
     @Override

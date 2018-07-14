@@ -21,11 +21,6 @@ public class JdbcTemplateUtils<T> {
         this.rowMapper = rowMapper;
     }
 
-    public JdbcTemplateUtils(JdbcTemplate jdbcTemplate, RowMapper<T> rowMapper) {
-        this.jdbcTemplate = jdbcTemplate;
-        this.rowMapper = rowMapper;
-    }
-
     public final int findCount(CharSequence sql, Object... args) {
         Integer count = jdbcTemplate.query(sql.toString(), args, rs -> {
             if (rs.next()) {

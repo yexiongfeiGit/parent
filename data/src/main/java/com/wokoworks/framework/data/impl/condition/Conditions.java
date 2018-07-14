@@ -9,7 +9,7 @@ import java.util.Collection;
  * @author 0x0001
  */
 public final class Conditions {
-    public static Condition equal(String field, Object arg) {
+    public static Condition equals(String field, Object arg) {
         return new SimpleCondition(field, Opt.EQ, arg);
     }
 
@@ -21,11 +21,11 @@ public final class Conditions {
         return new SimpleCondition(field, Opt.GT, arg);
     }
 
-    public static Condition lessThanEqual(String field, Object arg) {
+    public static Condition lessThanEquals(String field, Object arg) {
         return new SimpleCondition(field, Opt.LTE, arg);
     }
 
-    public static Condition greaterThanEqual(String field, Object arg) {
+    public static Condition greaterThanEquals(String field, Object arg) {
         return new SimpleCondition(field, Opt.GTE, arg);
     }
 
