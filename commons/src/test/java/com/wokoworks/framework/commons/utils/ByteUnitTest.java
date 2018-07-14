@@ -3,6 +3,7 @@ package com.wokoworks.framework.commons.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;

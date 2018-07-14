@@ -3,10 +3,23 @@ package com.wokoworks.framework.commons.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class HashUtilsTest {
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testConstruct() throws Throwable {
+        final Constructor<HashUtils> constructor = HashUtils.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch(InvocationTargetException e) {
+            throw e.getCause();
+        }
+    }
 
     @Test
     public void md5() {

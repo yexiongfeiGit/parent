@@ -214,27 +214,10 @@ public enum ByteUnit {
     };
 
 
-    public double toBytes(double d) {
-        throw new AbstractMethodError();
-    }
-
-    public double toKilobytes(double d) {
-        throw new AbstractMethodError();
-    }
-
-    public double toMegabytes(double d) {
-        throw new AbstractMethodError();
-    }
-
-    public double toGigabytes(double d) {
-        throw new AbstractMethodError();
-    }
-
-    public double toTerabytes(double d) {
-        throw new AbstractMethodError();
-    }
-
-    public double toPetabytes(double d) {
-        throw new AbstractMethodError();
-    }
+    public abstract double toBytes(double d);
+    public abstract double toKilobytes(double d);
+    public abstract double toMegabytes(double d);
+    public abstract double toGigabytes(double d);
+    public abstract double toTerabytes(double d);
+    public abstract double toPetabytes(double d);
 }

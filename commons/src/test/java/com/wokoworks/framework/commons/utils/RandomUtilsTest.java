@@ -3,7 +3,21 @@ package com.wokoworks.framework.commons.utils;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public class RandomUtilsTest {
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testConstruct() throws Throwable {
+        final Constructor<RandomUtils> constructor = RandomUtils.class.getDeclaredConstructor();
+        constructor.setAccessible(true);
+        try {
+            constructor.newInstance();
+        } catch(InvocationTargetException e) {
+            throw e.getCause();
+        }
+    }
 
     @Test
     public void randomNumberWithFixedLength() {
