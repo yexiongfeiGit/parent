@@ -25,13 +25,14 @@ class ComplexCondition implements Condition {
     @Override
     public String getSql() {
         if (sql == null) {
+            args.clear();
             final String firstSql = first.getSql();
             final Object[] firstArgs = first.getArgs();
 
             final String secondSql = second.getSql();
             final Object[] secondArgs = second.getArgs();
 
-            StringBuilder builder = new StringBuilder(firstSql.length() + secondArgs.length + 10);
+            StringBuilder builder = new StringBuilder(firstSql.length() + secondSql.length() + 10);
 
             builder.append("(");
 
@@ -46,8 +47,13 @@ class ComplexCondition implements Condition {
             builder.append(")");
             sql = builder.toString();
 
-            Collections.addAll(args, firstArgs);
-            Collections.addAll(args, secondArgs);
+            if (firstArgs != null) {
+                Collections.addAll(args, firstArgs);
+            }
+
+            if (secondArgs != null) {
+                Collections.addAll(args, secondArgs);
+            }
 
         }
         return sql;
@@ -55,6 +61,9 @@ class ComplexCondition implements Condition {
 
     @Override
     public Object[] getArgs() {
+        if (sql == null) {
+            getSql();
+        }
         return args.toArray();
     }
 
