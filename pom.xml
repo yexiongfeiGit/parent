@@ -32,6 +32,12 @@
         <guava.version>25.1-jre</guava.version>
         <dbunit.version>2.5.4</dbunit.version>
         <mockito.version>1.10.19</mockito.version>
+        <javapoet.version>1.11.1</javapoet.version>
+
+        <!-- webjars -->
+        <vue.version>2.5.13</vue.version>
+        <bootstrap.version>3.3.7</bootstrap.version>
+        <webjars-locator.version>0.34</webjars-locator.version>
     </properties>
 
     <dependencyManagement>
@@ -58,6 +64,31 @@
                 <groupId>org.mockito</groupId>
                 <artifactId>mockito-all</artifactId>
                 <version>${mockito.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.squareup</groupId>
+                <artifactId>javapoet</artifactId>
+                <version>${javapoet.version}</version>
+            </dependency>
+
+            <!-- webjars -->
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>vue</artifactId>
+                <version>${vue.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>bootstrap</artifactId>
+                <version>${bootstrap.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.webjars</groupId>
+                <artifactId>webjars-locator</artifactId>
+                <version>${webjars-locator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
