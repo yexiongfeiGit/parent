@@ -1,56 +1,55 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>代码生成</title>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="webjars/vue/2.5.13/vue.min.js"></script>
 </head>
+
 <body>
-<div class="container-fluid" id="container">
-    <H1>代码生成</H1>
- <div class="row">
-     <div class="col-md-3">
-         <div class="panel panel-default">
-             <div class="panel-heading">
-                 数据库连接
-                 <button class="btn btn-xs pull-right btn-primary"><span class="glyphicon glyphicon-plus"></span></button>
-             </div>
-             <div class="list-group">
-                 <a v-for="c in connections" class="list-group-item">{{ c.name }}</a>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-3">
-         <div class="panel panel-default">
-             <div class="panel-heading">数据库</div>
-             <div class="list-group">
-                 <a v-for="c in databases" class="list-group-item">{{ c.name }}</a>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-3">
-         <div class="panel panel-default">
-             <div class="panel-heading">表</div>
-             <div class="list-group">
-                 <a v-for="c in tables" class="list-group-item">{{ c.name }}</a>
-             </div>
-         </div>
-     </div>
-     <div class="col-md-3">
-         <div class="panel panel-default">
-             <div class="panel-heading">模板</div>
-             <div class="list-group">
-                 <a v-for="c in templates" class="list-group-item">{{ c.name }}</a>
-             </div>
-         </div>
-     </div>
-
-
- </div>
-</div>
+    <div class="container-fluid" id="container">
+        <H1>代码生成</H1>
+        <div class="row">
+            <div class="col-md-3">
+                <list-panel :list="connections" :name='"数据库连接"' :has_add_button="true" :single_choose="true" @item_click='conn_item_click' @info_click="conn_info_click" @add_button_click="conn_add_button_click"></list-panel>
+            </div>
+            <div class="col-md-3">
+                <list-panel :list="databases" :name='"数据库"' :has_add_button="false"></list-panel>
+            </div>
+            <div class="col-md-3">
+                <list-panel :list="tables" :name='"表"' :has_add_button="false"></list-panel>
+            </div>
+            <div class="col-md-3">
+                <list-panel :list="templates" :name='"模板"' :has_add_button="false"></list-panel>
+            </div>
+        </div>
+    </div>
+<!-- 列表项 -->
+<script type="text/template" id="list-item">
+    <a class="list-group-item" v-bind:class="{active:data.active}" @click="click">
+        {{ data.name }}
+        <button class="btn btn-xs pull-right btn-info" @click="info_click">
+            <span class="glyphicon glyphicon-info-sign"></span>
+        </button>
+    </a>
+</script>
+<!-- 列表 -->
+<script type="text/template" id="list-panel">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ name }}
+            <button v-if="has_add_button" class="btn btn-xs pull-right btn-primary" @click="add_button_click"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+        <div class="list-group">
+            <list-item v-for="c in list" :data="c" @info_click="info_click" @item_click='item_click'></list-item>
+        </div>
+    </div>
+</script>
+<!-- app -->
 <script src="js/index.js"></script>
 </body>
+
 </html>
