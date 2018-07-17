@@ -6,32 +6,46 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <title>代码生成</title>
     <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="webjars/vue/2.5.13/vue.min.js"></script>
 </head>
 
 <body>
     <div class="container-fluid" id="container">
         <H1>代码生成</H1>
         <div class="row">
-            <div class="col-md-3">
-                <list-panel :list="connections" :title='"数据库连接"' :has_add_button="true" :single_choose="true" @item_click='conn_item_click' @info_click="conn_info_click" @add_button_click="conn_add_button_click"></list-panel>
+            <div class="col-md-2">
+                <list-panel :list="connections" title='数据库连接' has_add_button="true" single_choose="true" @item_click='conn_item_click' @info_click="conn_info_click" @add_button_click="conn_add_button_click"></list-panel>
             </div>
             <div class="col-md-3">
-                <list-panel :list="databases" :title='"数据库"'></list-panel>
+                <list-panel :list="databases" title='数据库' single_choose="true" @item_click="database_item_click"></list-panel>
             </div>
             <div class="col-md-3">
-                <list-panel :list="tables" :title='"表"'></list-panel>
+                <list-panel :list="tables" title='表'></list-panel>
             </div>
-            <div class="col-md-3">
-                <list-panel :list="templates" :title='"模板"'></list-panel>
+            <div class="col-md-2">
+                <list-panel :list="templates" title='模板'></list-panel>
+            </div>
+            <div class="col-md-2">
+                <list-panel :list="[{title: '生成',no_info:true}]" title="操作" @item_click="generator" has_add_button="true" @add_button_click="config_package_name"></list-panel>
             </div>
         </div>
+        <modal title="添加数据库连接" id="add_connection" commit_title="保存" close_title="关闭" @commit="save_connection">
+            <div v-for="(v, k) in connectionData" class="form-group">
+                <label>{{k}}</label>
+                <input type="text" class="form-control" v-model="connectionData[k]"/>
+            </div>
+        </modal>
+        <modal title="配置包名" id="config_package_name" commit_title="保存" close_title="关闭" @commit="save_package_name">
+            <div class="form-group">
+                <label>包名</label>
+                <input type="text" class="form-control" v-model="packageName"/>
+            </div>
+        </modal>
     </div>
 <!-- 列表项 -->
 <script type="text/template" id="list-item">
-    <a class="list-group-item" v-bind:class="{active:data.active}" @click="click">
-        {{ data.name }}
-        <button v-if="data.has_info" class="btn btn-xs pull-right btn-info" @click="info_click">
+    <a class="list-group-item" :class="{active:data.active}" @click="click">
+        {{ data.title }}
+        <button v-if="!data.no_info" class="btn btn-xs pull-right btn-info" @click="info_click">
             <span class="glyphicon glyphicon-info-sign"></span>
         </button>
     </a>
@@ -48,8 +62,31 @@
         </div>
     </div>
 </script>
+<!-- 弹出框 -->
+<script type="text/template" id="dialog">
+    <div class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{ title }}</h4>
+                </div>
+                <div class="modal-body">
+                    <slot></slot>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{{ close_title || "Close"}}</button>
+                    <button type="button" class="btn btn-primary" @click="commit">{{ commit_title || "Save changes" }}</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+</script>
 <!-- app -->
-<script src="js/index.js"></script>
+    <script src="webjars/vue/2.5.13/vue.min.js"></script>
+    <script src="webjars/jquery/3.3.1-1/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>
