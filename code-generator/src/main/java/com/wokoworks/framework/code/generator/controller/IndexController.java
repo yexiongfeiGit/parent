@@ -136,17 +136,17 @@ public class IndexController {
                 model.setColumnList(columns);
 
                 final ResultSet rs = conn.getMetaData().getColumns(data.getDatabase(), null, table, "%");
-                final ResultSetMetaData metaData = rs.getMetaData();
+//                final ResultSetMetaData metaData = rs.getMetaData();
                 while (rs.next()) {
                     final VoTemplate.Column column = new VoTemplate.Column();
                     column.setName(rs.getString("COLUMN_NAME"));
                     column.setType(rs.getInt("DATA_TYPE"));
                     column.setRemark(rs.getString("REMARKS"));
                     columns.add(column);
-                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
-                        log.info("name: {} value: {}", metaData.getColumnName(i), rs.getObject(i));
-                    }
-                    log.info("");
+//                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
+//                        log.info("name: {} value: {}", metaData.getColumnName(i), rs.getObject(i));
+//                    }
+//                    log.info("");
                 }
                 String filePath = data.getPackageName().replaceAll("\\.", "/") + "/" + VoTemplate.CLASS_CONVERT.convert(table) + ".java";
                 final ZipEntry entry = new ZipEntry(filePath);
