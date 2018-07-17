@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -148,6 +151,15 @@ public class IndexController {
 //                    }
 //                    log.info("");
                 }
+
+                {
+                    try {
+                        template.process(model, System.out);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
                 String filePath = data.getPackageName().replaceAll("\\.", "/") + "/" + VoTemplate.CLASS_CONVERT.convert(table) + ".java";
                 final ZipEntry entry = new ZipEntry(filePath);
                 try {

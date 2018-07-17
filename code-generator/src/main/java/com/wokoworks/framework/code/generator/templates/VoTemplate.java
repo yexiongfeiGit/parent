@@ -3,10 +3,10 @@ package com.wokoworks.framework.code.generator.templates;
 import com.google.common.base.CaseFormat;
 import com.google.common.base.Converter;
 import com.google.common.base.Strings;
-import com.squareup.javapoet.FieldSpec;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.TypeSpec;
+import com.squareup.javapoet.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 import javax.lang.model.element.Modifier;
@@ -20,10 +20,13 @@ import java.sql.JDBCType;
 import java.sql.Ref;
 import java.sql.Struct;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author 0x0001
  */
+@Slf4j
 public class VoTemplate implements Template<VoTemplate.Model> {
 
     public static final Converter<String, String> CLASS_CONVERT = CaseFormat.LOWER_UNDERSCORE.converterTo(CaseFormat.UPPER_CAMEL);
@@ -107,16 +110,93 @@ public class VoTemplate implements Template<VoTemplate.Model> {
 //            TIMESTAMP_WITH_TIMEZONE(Types.TIMESTAMP_WITH_TIMEZONE);
     }
 
+    final Pattern pattern = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d\\:|$)");
+
+
 
     @Override
     public void process(Model model, OutputStream out) throws IOException {
         @Nullable final String className = CLASS_CONVERT.convert(model.getTableName());
 
+        List<TypeSpec> subTypes = new ArrayList<>();
+
         List<FieldSpec> fieldSpecs = new ArrayList<>();
         for (Column column : model.getColumnList()) {
             final FieldSpec.Builder builder = FieldSpec.builder(getType(column), FIELD_CONVERT.convert(column.getName()), Modifier.PRIVATE);
-            if (!Strings.isNullOrEmpty(column.getRemark())) {
-                builder.addJavadoc(column.getRemark() + "\n");
+            final String remark = column.getRemark();
+            if (!Strings.isNullOrEmpty(remark)) {
+                String javaDoc = null;
+                final Matcher matcher = pattern.matcher(remark);
+
+                TypeSpec.Builder enumBuilder = null;
+
+                @Nullable final String typeName = CLASS_CONVERT.convert(column.getName());
+
+                while(matcher.find()) {
+                    if (javaDoc == null) {
+                        javaDoc = remark.substring(0, matcher.start());
+                    }
+
+                    if (enumBuilder == null) {
+                        enumBuilder = TypeSpec.enumBuilder(typeName);
+                        final TypeVariableName type = TypeVariableName.get(typeName);
+                        final TypeVariableName returnType = TypeVariableName.get("Optional<"+typeName+">", Optional.class);
+                        System.out.println(type);
+                        enumBuilder.addMethod(MethodSpec.methodBuilder("valueOf")
+                            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+                            .addParameter(int.class, "code")
+                            .addCode(CodeBlock.builder()
+                                .beginControlFlow("for ($T v : values())", type)
+                                .add(CodeBlock.builder()
+                                    .beginControlFlow("if (v.code == code)")
+                                    .addStatement("return Optional.of(v)")
+                                    .endControlFlow()
+                                    .addStatement("return Optional.empty()")
+                                    .build())
+                                .endControlFlow()
+                                .build())
+                            .returns(returnType)
+                            .build());
+
+                        enumBuilder.addField(TypeName.INT, "code", Modifier.PUBLIC, Modifier.FINAL)
+                            .addField(String.class, "remark", Modifier.PUBLIC, Modifier.FINAL);
+
+                        enumBuilder.addMethod(MethodSpec.constructorBuilder()
+                            .addModifiers(Modifier.PRIVATE)
+                            .addParameter(TypeName.INT, "code")
+                            .addParameter(String.class, "remark")
+                            .addCode(CodeBlock.builder()
+                                .addStatement("this.code = code")
+                                .addStatement("this.remark = remark")
+                                .build())
+                            .build());
+
+                    }
+
+                    final String value = matcher.group(1);
+                    final String name = matcher.group(2);
+                    final String other = matcher.group(3);
+
+//                    enumBuilder.addEnumConstant(name);
+                    enumBuilder.addEnumConstant(name, TypeSpec.anonymousClassBuilder("$L,$S", value, other)
+                        .build());
+//                    enumBuilder.addEnumConstant(name, typeSpec);
+
+                    log.info("name: {}, value: {}, comment: {}", name, value, other);
+                }
+
+                javaDoc = Optional.ofNullable(javaDoc).orElse(remark);
+                builder.addJavadoc(javaDoc + "\n");
+
+                if(enumBuilder != null) {
+                    final TypeSpec enumType = enumBuilder
+                        .addModifiers(Modifier.PUBLIC)
+                        .addAnnotation(Getter.class)
+                        .build();
+                    subTypes.add(enumType);
+                }
+
+
             }
             final FieldSpec fieldSpec = builder.build();
             fieldSpecs.add(fieldSpec);
@@ -126,6 +206,7 @@ public class VoTemplate implements Template<VoTemplate.Model> {
             .addModifiers(Modifier.PUBLIC)
             .addAnnotation(Data.class)
             .addFields(fieldSpecs)
+            .addTypes(subTypes)
             .build();
 
         final JavaFile javaFile = JavaFile.builder(model.packageName, typeSpec).build();
@@ -154,5 +235,21 @@ public class VoTemplate implements Template<VoTemplate.Model> {
         private String name;
         private int type;
         private String remark;
+    }
+
+    public static void main(String[] args) {
+        String str = "分类ID 1: New分类1 2: Old 分类2";
+        final Pattern pattern = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d\\:|$)");
+
+        final Matcher matcher = pattern.matcher(str);
+        while(matcher.find()) {
+            System.out.println(matcher.start());
+            final String value = matcher.group(1);
+            final String name = matcher.group(2);
+            final String other = matcher.group(3);
+
+            log.info("name: {}, value: {}, comment: {}", name, value, other);
+        }
+
     }
 }

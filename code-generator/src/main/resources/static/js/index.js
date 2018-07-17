@@ -182,7 +182,7 @@
                 //
                 // aLink.dispatchEvent(evt);
 
-                window.open("download/"+data.file);
+                // window.open("download/"+data.file);
 
 
                 console.log(data);
