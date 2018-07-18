@@ -110,8 +110,10 @@ public class VoTemplate implements Template<VoTemplate.Model> {
 //            TIMESTAMP_WITH_TIMEZONE(Types.TIMESTAMP_WITH_TIMEZONE);
     }
 
-    final Pattern pattern = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d\\:|$)");
-
+    /**
+     * 通过注释内容生成枚举的正则表达式匹配规则
+     */
+    private static final Pattern ENUM_PATTERN = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d\\:|$)");
 
 
     @Override
@@ -120,13 +122,15 @@ public class VoTemplate implements Template<VoTemplate.Model> {
 
         List<TypeSpec> subTypes = new ArrayList<>();
 
+        final Converter<String, String> enumConvert = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
+
         List<FieldSpec> fieldSpecs = new ArrayList<>();
         for (Column column : model.getColumnList()) {
             final FieldSpec.Builder builder = FieldSpec.builder(getType(column), FIELD_CONVERT.convert(column.getName()), Modifier.PRIVATE);
             final String remark = column.getRemark();
             if (!Strings.isNullOrEmpty(remark)) {
                 String javaDoc = null;
-                final Matcher matcher = pattern.matcher(remark);
+                final Matcher matcher = ENUM_PATTERN.matcher(remark);
 
                 TypeSpec.Builder enumBuilder = null;
 
@@ -138,49 +142,16 @@ public class VoTemplate implements Template<VoTemplate.Model> {
                     }
 
                     if (enumBuilder == null) {
-                        enumBuilder = TypeSpec.enumBuilder(typeName);
-                        final TypeVariableName type = TypeVariableName.get(typeName);
-                        final TypeVariableName returnType = TypeVariableName.get("Optional<"+typeName+">", Optional.class);
-                        System.out.println(type);
-                        enumBuilder.addMethod(MethodSpec.methodBuilder("valueOf")
-                            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                            .addParameter(int.class, "code")
-                            .addCode(CodeBlock.builder()
-                                .beginControlFlow("for ($T v : values())", type)
-                                .add(CodeBlock.builder()
-                                    .beginControlFlow("if (v.code == code)")
-                                    .addStatement("return Optional.of(v)")
-                                    .endControlFlow()
-                                    .addStatement("return Optional.empty()")
-                                    .build())
-                                .endControlFlow()
-                                .build())
-                            .returns(returnType)
-                            .build());
-
-                        enumBuilder.addField(TypeName.INT, "code", Modifier.PUBLIC, Modifier.FINAL)
-                            .addField(String.class, "remark", Modifier.PUBLIC, Modifier.FINAL);
-
-                        enumBuilder.addMethod(MethodSpec.constructorBuilder()
-                            .addModifiers(Modifier.PRIVATE)
-                            .addParameter(TypeName.INT, "code")
-                            .addParameter(String.class, "remark")
-                            .addCode(CodeBlock.builder()
-                                .addStatement("this.code = code")
-                                .addStatement("this.remark = remark")
-                                .build())
-                            .build());
-
+                        enumBuilder = newEnumBuilder(typeName);
                     }
 
+
                     final String value = matcher.group(1);
-                    final String name = matcher.group(2);
+                    final String name = enumConvert.convert(matcher.group(2)).toUpperCase();
                     final String other = matcher.group(3);
 
-//                    enumBuilder.addEnumConstant(name);
                     enumBuilder.addEnumConstant(name, TypeSpec.anonymousClassBuilder("$L,$S", value, other)
                         .build());
-//                    enumBuilder.addEnumConstant(name, typeSpec);
 
                     log.info("name: {}, value: {}, comment: {}", name, value, other);
                 }
@@ -190,8 +161,7 @@ public class VoTemplate implements Template<VoTemplate.Model> {
 
                 if(enumBuilder != null) {
                     final TypeSpec enumType = enumBuilder
-                        .addModifiers(Modifier.PUBLIC)
-                        .addAnnotation(Getter.class)
+
                         .build();
                     subTypes.add(enumType);
                 }
@@ -214,6 +184,46 @@ public class VoTemplate implements Template<VoTemplate.Model> {
 
         javaFile.writeTo(bufferedWriter);
         bufferedWriter.flush();
+    }
+
+    private TypeSpec.Builder newEnumBuilder(@Nullable String typeName) {
+        TypeSpec.Builder enumBuilder;
+        enumBuilder = TypeSpec.enumBuilder(typeName)
+            .addModifiers(Modifier.PUBLIC)
+            .addAnnotation(Getter.class);
+
+        final TypeVariableName type = TypeVariableName.get(typeName);
+        final TypeVariableName returnType = TypeVariableName.get("Optional<"+ typeName+">", Optional.class);
+
+        enumBuilder.addMethod(MethodSpec.methodBuilder("valueOf")
+            .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+            .addParameter(int.class, "code")
+            .addCode(CodeBlock.builder()
+                .beginControlFlow("for ($T v : values())", type)
+                .add(CodeBlock.builder()
+                    .beginControlFlow("if (v.code == code)")
+                    .addStatement("return Optional.of(v)")
+                    .endControlFlow()
+                    .addStatement("return Optional.empty()")
+                    .build())
+                .endControlFlow()
+                .build())
+            .returns(returnType)
+            .build());
+
+        enumBuilder.addField(TypeName.INT, "code", Modifier.PUBLIC, Modifier.FINAL)
+            .addField(String.class, "remark", Modifier.PUBLIC, Modifier.FINAL);
+
+        enumBuilder.addMethod(MethodSpec.constructorBuilder()
+            .addModifiers(Modifier.PRIVATE)
+            .addParameter(TypeName.INT, "code")
+            .addParameter(String.class, "remark")
+            .addCode(CodeBlock.builder()
+                .addStatement("this.code = code")
+                .addStatement("this.remark = remark")
+                .build())
+            .build());
+        return enumBuilder;
     }
 
     private Type getType(Column column) {
