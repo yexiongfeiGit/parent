@@ -1,7 +1,6 @@
 package com.wokoworks.framework.code.generator.controller;
 
 import com.google.common.collect.ImmutableMap;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import com.wokoworks.framework.code.generator.templates.VoTemplate;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +13,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -126,7 +126,7 @@ public class IndexController {
 
         final VoTemplate template = new VoTemplate();
 
-        final ByteOutputStream out = new ByteOutputStream();
+        final ByteArrayOutputStream out = new ByteArrayOutputStream();
         final ZipOutputStream zip = new ZipOutputStream(out);
 
         try (Connection conn = DriverManager.getConnection(url, data.getUserName(), data.getPassword())) {
@@ -179,7 +179,7 @@ public class IndexController {
 //                e.printStackTrace();
 //            }
             final String uuid = UUID.randomUUID().toString();
-            downloadFiles.put(uuid, out.getBytes());
+            downloadFiles.put(uuid, out.toByteArray());
 
             return ImmutableMap.of("code", 200, "file", uuid);
 

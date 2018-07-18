@@ -15,6 +15,8 @@
         <module>data</module>
         <module>commons</module>
         <module>code-generator</module>
+        <module>spring-cloud-starter-client</module>
+        <module>spring-cloud-starter-server</module>
     </modules>
 
     <parent>
@@ -28,6 +30,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+
+        <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 
         <guava.version>25.1-jre</guava.version>
         <dbunit.version>2.5.4</dbunit.version>
@@ -43,6 +47,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- spring cloud -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
