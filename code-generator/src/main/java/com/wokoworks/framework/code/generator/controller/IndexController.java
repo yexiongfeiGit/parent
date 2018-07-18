@@ -160,7 +160,7 @@ public class IndexController {
                     }
                 }
 
-                String filePath = data.getPackageName().replaceAll("\\.", "/") + "/" + VoTemplate.CLASS_CONVERT.convert(table) + ".java";
+                String filePath = data.getPackageName().replaceAll("\\.", "/") + "/vo/" + VoTemplate.CLASS_CONVERT.convert(table) + ".java";
                 final ZipEntry entry = new ZipEntry(filePath);
                 try {
                     zip.putNextEntry(entry);
