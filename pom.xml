@@ -5,7 +5,7 @@
 
     <groupId>com.wokoworks.framework</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${framework.version}</version>
     <packaging>pom</packaging>
 
     <name>parent</name>
@@ -27,6 +27,7 @@
 
 
     <properties>
+        <framework.version>0.0.1-SNAPSHOT</framework.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
@@ -43,6 +44,10 @@
         <bootstrap.version>3.3.7</bootstrap.version>
         <webjars-locator.version>0.34</webjars-locator.version>
         <jquery.version>3.3.1-1</jquery.version>
+
+        <swagger.version>2.7.0</swagger.version>
+
+        <druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
     </properties>
 
     <dependencyManagement>
@@ -110,6 +115,18 @@
                 <artifactId>jquery</artifactId>
                 <version>${jquery.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -167,5 +184,16 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <!--<repository>-->
+        <!--<id>pundix-releases</id>-->
+        <!--<url>http://192.168.21.80:8081/nexus/content/repositories/releases/</url>-->
+        <!--</repository>-->
+
+        <snapshotRepository>
+            <id>pundix-snapshots</id>
+            <url>http://192.168.21.80:8081/nexus/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>
