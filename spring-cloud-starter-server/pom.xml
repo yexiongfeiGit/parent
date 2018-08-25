@@ -60,7 +60,17 @@
 
         <dependency>
             <groupId>com.wokoworks.framework</groupId>
-            <artifactId>commons</artifactId>
+            <artifactId>data</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
     </dependencies>
