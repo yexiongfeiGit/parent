@@ -13,7 +13,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -173,11 +175,11 @@ public class IndexController {
 
             IOUtils.closeQuietly(zip);
 //
-//            try (final FileOutputStream fout = new FileOutputStream("/tmp/test.zip")) {
-//                IOUtils.copy(new ByteArrayInputStream(out.getBytes()), fout);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            try (final FileOutputStream fout = new FileOutputStream("/Users/timtang/Downloads/test.zip")) {
+                IOUtils.copy(new ByteArrayInputStream(out.toByteArray()), fout);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             final String uuid = UUID.randomUUID().toString();
             downloadFiles.put(uuid, out.toByteArray());
 

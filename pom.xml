@@ -5,7 +5,7 @@
 
     <groupId>com.wokoworks.framework</groupId>
     <artifactId>parent</artifactId>
-    <version>${framework.version}</version>
+    <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>parent</name>
@@ -45,6 +45,8 @@
         <webjars-locator.version>0.34</webjars-locator.version>
         <jquery.version>3.3.1-1</jquery.version>
 
+        <swagger.version>2.7.0</swagger.version>
+
         <druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
     </properties>
 
@@ -69,6 +71,12 @@
                 <groupId>com.wokoworks.framework</groupId>
                 <artifactId>commons</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wokoworks.framework</groupId>
+                <artifactId>data</artifactId>
+                <version>${framework.version}</version>
             </dependency>
 
             <dependency>
@@ -112,6 +120,24 @@
                 <groupId>org.webjars</groupId>
                 <artifactId>jquery</artifactId>
                 <version>${jquery.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${druid-spring-boot-starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
