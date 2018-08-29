@@ -50,6 +50,12 @@ public class BatchFetcherTest {
     }
 
     @Test
+    public void testEmptyKey() {
+        personIntegerBatchFetcher.fetch(Person::getId, null);
+        Mockito.verify(repository, Mockito.never()).findInIds(Mockito.any());
+    }
+
+    @Test
     public void test() {
         List<Posts> list = new ArrayList<>();
         final int size = 10;
