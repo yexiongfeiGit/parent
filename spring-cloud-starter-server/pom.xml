@@ -11,7 +11,7 @@
 
     <artifactId>spring-cloud-starter-server</artifactId>
 
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <profiles>
         <profile>
@@ -87,12 +87,12 @@
         </snapshotRepository>
     </distributionManagement>
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
+    <!--<build>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>org.springframework.boot</groupId>-->
+                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</build>-->
 </project>
