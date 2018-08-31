@@ -11,7 +11,7 @@
 
     <artifactId>spring-cloud-starter-server</artifactId>
 
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <profiles>
         <profile>
