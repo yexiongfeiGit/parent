@@ -34,6 +34,14 @@ public final class Conditions {
         return new SimpleCondition(field, Opt.GTE, arg);
     }
 
+    public static Condition like(String field, Object arg) {
+        return new SimpleCondition(field, Opt.LIKE, arg);
+    }
+
+    public static Condition notLike(String field, Object arg) {
+        return new SimpleCondition(field, Opt.NOT_LIKE, arg);
+    }
+
     public static Condition in(String field, Object[] args) {
         return new SimpleCondition(field, Opt.IN, args);
     }

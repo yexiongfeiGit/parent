@@ -19,6 +19,8 @@ public class SimpleConditionTest {
 
             if (opt == Opt.IN || opt == Opt.NOT_IN) {
                 expectSql = expectSql + "(?)";
+            } else if (opt == Opt.LIKE || opt == Opt.NOT_LIKE) {
+                expectSql = expectSql + "'%" + arg + "%'";
             } else {
                 expectSql = expectSql + "?";
             }
@@ -36,6 +38,8 @@ public class SimpleConditionTest {
             final Object[] args = condition.getArgs();
             if (opt == Opt.IN || opt == Opt.NOT_IN) {
                 assertArrayEquals("args equal", arg, args);
+            } else if (opt == Opt.LIKE || opt == Opt.NOT_LIKE) {
+                assertArrayEquals("args equal", new Object[]{}, args);
             } else {
                 assertArrayEquals("args equal", new Object[]{arg}, args);
             }

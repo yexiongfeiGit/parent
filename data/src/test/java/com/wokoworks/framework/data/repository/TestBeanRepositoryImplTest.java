@@ -501,4 +501,40 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("record size", 0, beans.size());
         }
     }
+
+    @Test
+    public void findByNameLike() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameLike("小");
+            System.out.println("beans " + beans);
+            Assert.assertEquals("record size", 3, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("name like 小", bean.getName().contains("小"));
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameLike("大");
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByNameNotLike() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("大");
+            System.out.println("beans " + beans);
+            Assert.assertEquals("record size", 3, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("name not like 大", !bean.getName().contains("大"));
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("小");
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
 }
