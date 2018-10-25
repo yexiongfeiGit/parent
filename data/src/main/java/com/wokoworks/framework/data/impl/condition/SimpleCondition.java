@@ -28,14 +28,8 @@ class SimpleCondition implements Condition {
             final StringBuilder sqlBuilder = new StringBuilder();
             sqlBuilder.append(field).append(" ").append(opt.symbol).append(" ");
             if (opt != Opt.IN && opt != Opt.NOT_IN) {
-                if (opt == Opt.LIKE || opt == Opt.NOT_LIKE) {
-                    sqlBuilder.append("'%")
-                        .append(arg)
-                        .append("%'");
-                } else {
-                    sqlBuilder.append("?");
-                    args.add(arg);
-                }
+                sqlBuilder.append("?");
+                args.add(arg);
             } else {
                 sqlBuilder.append("(");
                 boolean first = true;
