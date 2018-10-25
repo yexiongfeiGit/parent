@@ -1,4 +1,4 @@
-package com.wokoworks.framework.data;
+package com.wokoworks.framework.test.data;
 
 import org.dbunit.DatabaseUnitException;
 import org.dbunit.database.DatabaseConfig;
@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 import java.sql.SQLException;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = TestApplication.class)
 public abstract class BaseRepositoryTest {
 
     @Autowired

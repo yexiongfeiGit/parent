@@ -17,6 +17,7 @@
         <module>code-generator</module>
         <module>spring-cloud-starter-client</module>
         <module>spring-cloud-starter-server</module>
+        <module>test</module>
     </modules>
 
     <parent>
@@ -83,6 +84,12 @@
             <dependency>
                 <groupId>com.wokoworks.framework</groupId>
                 <artifactId>data</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wokoworks.framework</groupId>
+                <artifactId>test</artifactId>
                 <version>${framework.version}</version>
             </dependency>
 

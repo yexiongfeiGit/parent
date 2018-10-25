@@ -1,7 +1,7 @@
 package com.wokoworks.framework.data.repository;
 
 import com.wokoworks.framework.commons.vo.Pair;
-import com.wokoworks.framework.data.BaseRepositoryTest;
+import com.wokoworks.framework.data.RepositoryTest;
 import com.wokoworks.framework.data.Page;
 import com.wokoworks.framework.data.Sort;
 import org.junit.Assert;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
+public class TestBeanRepositoryImplTest extends RepositoryTest {
     @Autowired
     private TestBeanRepository testBeanRepository;
 
@@ -506,7 +506,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
     public void findByNameLike() {
         // 能查询到的情况
         {
-            final List<TestBean> beans = testBeanRepository.findByNameLike("小");
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%小%");
             System.out.println("beans " + beans);
             Assert.assertEquals("record size", 3, beans.size());
             for (TestBean bean : beans) {
@@ -515,7 +515,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
         }
         // 查询不到的情况
         {
-            final List<TestBean> beans = testBeanRepository.findByNameLike("大");
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%大%");
             Assert.assertEquals("record size", 0, beans.size());
         }
     }
@@ -524,16 +524,16 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
     public void findByNameNotLike() {
         // 能查询到的情况
         {
-            final List<TestBean> beans = testBeanRepository.findByNameNotLike("大");
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%大%");
             System.out.println("beans " + beans);
             Assert.assertEquals("record size", 3, beans.size());
             for (TestBean bean : beans) {
-                Assert.assertTrue("name not like 大", !bean.getName().contains("大"));
+                Assert.assertTrue("name not like %大%", !bean.getName().contains("大"));
             }
         }
         // 查询不到的情况
         {
-            final List<TestBean> beans = testBeanRepository.findByNameNotLike("小");
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%小%");
             Assert.assertEquals("record size", 0, beans.size());
         }
     }
