@@ -39,11 +39,15 @@
 
     Vue.component('modal', {
         template: document.getElementById('dialog').innerText,
-        props: ['title', 'commit_title', 'close_title'],
+        props: ['title', 'commit_title', 'close_title', 'delete_title'],
         methods: {
             commit: function () {
                 console.log('commit...');
                 this.$emit('commit');
+            },
+            delete1: function() {
+                console.log("delete");
+                this.$emit('delete');
             }
         }
     });
@@ -111,7 +115,24 @@
                     console.error("error: ", data);
                 }
             },
-
+            delete_connection: function() {
+                let cs = [];
+                for(let c of connections) {
+                    let allCheck = true;
+                    for (let k in this.connectionData) {
+                        if (c[k] !== this.connectionData[k]) {
+                            allCheck = false;
+                            break;
+                        }
+                    }
+                    if (!allCheck) {
+                        cs.push(c);
+                    }
+                }
+                this.connections = connections = cs;
+                window.localStorage.setItem("connections", JSON.stringify(connections));
+                $('#add_connection').modal('hide');
+            },
             database_item_click: async function (item) {
                 this.current.database = item;
                 var conn = this.current.connection;
@@ -121,7 +142,6 @@
                     userName: conn.userName,
                     password: conn.password,
                     database: item.title,
-
                 };
                 let data = await $.post("/getTables", postData);
 
@@ -147,14 +167,42 @@
                     tables: tables,
                     templates: templates
                 };
-                let data = await $.ajax({
-                    url: 'generator',
-                    type: 'POST',
-                    contentType: 'application/json',
-                    data: JSON.stringify(postData)
-                });
 
-                console.log(data.file);
+                let form = document.createElement("form");
+                form.action = "generator";
+                form.target="_blank";
+                form.method="post";
+                for (let k of Object.keys(postData)) {
+                    let input = document.createElement("input");
+                    input.name = k;
+                    input.value = postData[k];
+                    form.appendChild(input);
+                }
+                document.body.appendChild(form);
+                form.submit();
+                document.body.removeChild(form);
+
+                // $.ajax({
+                //     url: 'generator',
+                //     type: 'POST',
+                //     contentType: 'application/json',
+                //     data: JSON.stringify(postData),
+                //     xhrFields: {
+                //         responseType: 'blob'
+                //     },
+                //     success: (data) => {
+                //         var a = document.createElement('a');
+                //         var url = window.URL.createObjectURL(data);
+                //         a.href = url;
+                //         a.download = database.title+".zip";
+                //         a.click();
+                //         window.URL.revokeObjectURL(url);
+                //     }
+                // });
+
+
+
+                // console.log(data.file);
 
                 // var aLink = document.createElement('a');
                 // // var blob = new Blob([data.file]);
@@ -185,7 +233,7 @@
                 // window.open("download/"+data.file);
 
 
-                console.log(data);
+                // console.log(data);
             },
             config_package_name: function () {
                 $('#config_package_name').modal();

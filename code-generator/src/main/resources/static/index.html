@@ -28,7 +28,7 @@
                 <list-panel :list="[{title: '生成',no_info:true}]" title="操作" @item_click="generator" has_add_button="true" @add_button_click="config_package_name"></list-panel>
             </div>
         </div>
-        <modal title="添加数据库连接" id="add_connection" commit_title="保存" close_title="关闭" @commit="save_connection">
+        <modal title="添加数据库连接" id="add_connection" commit_title="保存" close_title="关闭" delete_title="删除" @commit="save_connection" @delete="delete_connection">
             <div v-for="(v, k) in connectionData" class="form-group">
                 <label>{{k}}</label>
                 <input type="text" class="form-control" v-model="connectionData[k]"/>
@@ -75,6 +75,7 @@
                     <slot></slot>
                 </div>
                 <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" v-if="delete_title && delete_title.length > 0" @click="delete1">{{delete_title || "Delete"}}</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">{{ close_title || "Close"}}</button>
                     <button type="button" class="btn btn-primary" @click="commit">{{ commit_title || "Save changes" }}</button>
                 </div>
