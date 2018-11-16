@@ -18,7 +18,7 @@ public class RepositoryImplementsTemplate extends AbstractTemplate<VoTemplate.Mo
         final String className = String.format("%sRepositoryImpl", voName);
 
         final ClassName voType = ClassName.get(model.getPackageName() + ".vo", voName);
-        final ParameterizedTypeName baseRepository = ParameterizedTypeName.get(ClassName.get("com.wokoworks.framework.data", "BaseRepositoryImpl"),
+        final ParameterizedTypeName baseRepository = ParameterizedTypeName.get(ClassName.get("com.wokoworks.framework.data.impl", "BaseRepositoryImpl"),
             voType, ClassName.get(Integer.class));
         final TypeSpec type = TypeSpec.classBuilder(className)
             .addModifiers(Modifier.PUBLIC)
@@ -28,14 +28,21 @@ public class RepositoryImplementsTemplate extends AbstractTemplate<VoTemplate.Mo
             .superclass(baseRepository)
             .addSuperinterface(ClassName.get(model.getPackageName() + ".repository", voName + "Repository"))
             .addMethod(MethodSpec.methodBuilder("getTableName")
+                .returns(String.class)
                 .addAnnotation(Override.class)
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.builder().addStatement("return $S", model.getTableName()).build())
                 .build())
             .addMethod(MethodSpec.methodBuilder("getBeanClass")
                 .addAnnotation(Override.class)
+                .returns(ParameterizedTypeName.get(ClassName.get(Class.class), voType))
                 .addModifiers(Modifier.PUBLIC)
                 .addCode(CodeBlock.builder().addStatement("return $T.class", voType).build())
+                .build())
+            .addMethod(MethodSpec.methodBuilder("condition")
+                .addModifiers(Modifier.PRIVATE)
+                .returns(ClassName.get(model.getPackageName() + ".vo", voName,"ConditionBuilder"))
+                .addStatement("return $T.conditionBuilder()", voType)
                 .build())
             .build();
 

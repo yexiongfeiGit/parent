@@ -8,6 +8,7 @@ import com.squareup.javapoet.JavaFile;
 import java.io.*;
 import java.lang.reflect.Type;
 import java.sql.JDBCType;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -23,17 +24,25 @@ public abstract class AbstractTemplate<T> implements Template<T> {
         return JDBCTypeConvert.getInstance().getType(jdbcType);
     }
 
+    private String formatDate(Date date) {
+        return SimpleDateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.MEDIUM).format(date);
+    }
+
     void write(OutputStream out, JavaFile javaFile) throws IOException {
+        final JavaFile newFile = javaFile.toBuilder()
+            .skipJavaLangImports(true)
+            .addFileComment("auto generator by wokoworks $L", formatDate(new Date()))
+            .indent("    ").build();
         try(ByteArrayOutputStream arrOut = new ByteArrayOutputStream()) {
             try (Writer writer = new OutputStreamWriter(arrOut)) {
-                javaFile.writeTo(writer);
+                newFile.writeTo(writer);
             }
             out.write(arrOut.toByteArray());
         }
     }
 
     CodeBlock getDateJavaDocCodeBlock() {
-        return CodeBlock.builder().add("@date $L\n", new SimpleDateFormat("yyyy-MM-dd").format(new Date())).build();
+        return CodeBlock.builder().add("@date $L\n", formatDate(new Date())).build();
     }
 
     CodeBlock getAuthorJavaDocCodeBlock() {
