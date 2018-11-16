@@ -184,7 +184,7 @@ public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
             conditionBuilder.addMethod(equalBuilder.build());
 
 
-            final MethodSpec.Builder andEqualBuilder = MethodSpec.methodBuilder(FIELD_CONVERT.convert("and_" + fieldName + "_equal_to"))
+            final MethodSpec.Builder andEqualBuilder = MethodSpec.methodBuilder(FIELD_CONVERT.convert("and_" + name + "_equal_to"))
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(paramType, fieldName)
                 .returns(returnType);
@@ -196,14 +196,14 @@ public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
             conditionBuilder.addMethod(andEqualBuilder.build());
 
             // or equal
-            final MethodSpec.Builder orEqualBuilder = MethodSpec.methodBuilder(FIELD_CONVERT.convert("or_" + fieldName + "_equal_to"))
+            final MethodSpec.Builder orEqualBuilder = MethodSpec.methodBuilder(FIELD_CONVERT.convert("or_" + name + "_equal_to"))
                 .addModifiers(Modifier.PUBLIC)
                 .addParameter(paramType, fieldName)
                 .returns(returnType);
             if (isEnum){
-                orEqualBuilder.addStatement("return or($T.equals($S, $L.code))", conditions, column.name, fieldName);
+                orEqualBuilder.addStatement("return or($T.equals($S, $L.code))", conditions, name, fieldName);
             } else {
-                orEqualBuilder.addStatement("return or($T.equals($S, $L))", conditions, column.name, fieldName);
+                orEqualBuilder.addStatement("return or($T.equals($S, $L))", conditions, name, fieldName);
             }
 
 
