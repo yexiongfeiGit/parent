@@ -1,6 +1,6 @@
 package com.wokoworks.framework.data.impl.sqlbuilder;
 
-import com.wokoworks.framework.commons.vo.Pair;
+import com.wokoworks.framework.commons.tuple.Tuple;
 import com.wokoworks.framework.data.Condition;
 import com.wokoworks.framework.data.Sort;
 import com.wokoworks.framework.data.impl.condition.ConditionBuilder;
@@ -15,7 +15,7 @@ final class SqlBuildUtil {
         throw new UnsupportedOperationException();
     }
 
-    static Optional<Pair<String, List<Object>>> buildCondition(ConditionBuilder conditionBuilder) {
+    static Optional<Tuple.TwoTuple<String, List<Object>>> buildCondition(ConditionBuilder conditionBuilder) {
         if (conditionBuilder.hasCondition()) {
             final StringBuilder sql = new StringBuilder();
             final List<Object> args = new ArrayList<>();
@@ -23,12 +23,12 @@ final class SqlBuildUtil {
             sql.append(" WHERE ");
             sql.append(condition.getSql());
             Collections.addAll(args, condition.getArgs());
-            return Optional.of(Pair.of(sql.toString(), args));
+            return Optional.of(Tuple.of(sql.toString(), args));
         }
         return Optional.empty();
     }
 
-    static Optional<Pair<String, List<Object>>> limit(int offset, int limit) {
+    static Optional<Tuple.TwoTuple<String, List<Object>>> limit(int offset, int limit) {
         if (limit > 0) {
             final StringBuilder sql = new StringBuilder();
             List<Object> args = new ArrayList<>();
@@ -40,7 +40,7 @@ final class SqlBuildUtil {
                 sql.append(" LIMIT ?");
                 args.add(limit);
             }
-            return Optional.of(Pair.of(sql.toString(), args));
+            return Optional.of(Tuple.of(sql.toString(), args));
         }
         return Optional.empty();
     }
@@ -71,8 +71,8 @@ final class SqlBuildUtil {
         return Optional.empty();
     }
 
-    static void append(StringBuilder sqlBuilder, List<Object> args, Pair<String, List<Object>> pair) {
-        sqlBuilder.append(pair.getFirst());
-        args.addAll(pair.getSecond());
+    static void append(StringBuilder sqlBuilder, List<Object> args, Tuple.TwoTuple<String, List<Object>> pair) {
+        sqlBuilder.append(pair.first);
+        args.addAll(pair.second);
     }
 }

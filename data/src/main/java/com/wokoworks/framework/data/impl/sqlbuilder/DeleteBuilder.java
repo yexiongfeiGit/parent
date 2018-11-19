@@ -1,7 +1,7 @@
 package com.wokoworks.framework.data.impl.sqlbuilder;
 
 import com.google.common.base.Preconditions;
-import com.wokoworks.framework.commons.vo.Pair;
+import com.wokoworks.framework.commons.tuple.Tuple;
 import com.wokoworks.framework.data.Condition;
 import com.wokoworks.framework.data.Sort;
 import com.wokoworks.framework.data.impl.JdbcTemplateUtils;
@@ -68,8 +68,8 @@ public class DeleteBuilder<T> {
         StringBuilder sql = new StringBuilder("DELETE FROM ").append(tableName);
 
         // append where
-        final Optional<Pair<String, List<Object>>> pair = SqlBuildUtil.buildCondition(conditionBuilder);
-        pair.ifPresent(p -> SqlBuildUtil.append(sql, args, p));
+        final Optional<Tuple.TwoTuple<String, List<Object>>> tuple = SqlBuildUtil.buildCondition(conditionBuilder);
+        tuple.ifPresent(p -> SqlBuildUtil.append(sql, args, p));
 
         // append sort
         SqlBuildUtil.orderBy(sorts).ifPresent(sql::append);

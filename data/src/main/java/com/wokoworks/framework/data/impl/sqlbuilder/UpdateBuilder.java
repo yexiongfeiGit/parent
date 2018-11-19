@@ -1,7 +1,7 @@
 package com.wokoworks.framework.data.impl.sqlbuilder;
 
 import com.google.common.base.Preconditions;
-import com.wokoworks.framework.commons.vo.Pair;
+import com.wokoworks.framework.commons.tuple.Tuple;
 import com.wokoworks.framework.data.Condition;
 import com.wokoworks.framework.data.impl.JdbcTemplateUtils;
 import com.wokoworks.framework.data.impl.condition.ConditionBuilder;
@@ -80,7 +80,7 @@ public class UpdateBuilder<T> {
         }
 
         // append where
-        final Optional<Pair<String, List<Object>>> pairOptional = SqlBuildUtil.buildCondition(conditionBuilder);
+        final Optional<Tuple.TwoTuple<String, List<Object>>> pairOptional = SqlBuildUtil.buildCondition(conditionBuilder);
         if (!pairOptional.isPresent()) {
             throw new IllegalStateException("update data but not exists condition");
         }
