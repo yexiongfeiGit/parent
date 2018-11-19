@@ -43,7 +43,7 @@ public class BatchFetcher<T, K extends Serializable> {
             return;
         }
         final List<T> lists = repository.findInIds(ids);
-        final Map<K, T> map = lists.stream().collect(Collectors.toMap(idExtract, Function.identity()));
+        final Map<K, T> map = lists.parallelStream().collect(Collectors.toMap(idExtract, Function.identity()));
 
         multimap.forEach((k, supplier) -> {
             final T data = map.get(k);
