@@ -3,7 +3,6 @@ package com.wokoworks.framework.commons.utils;
 import java.security.SecureRandom;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @author 0x0001
@@ -41,11 +40,9 @@ public final class RandomUtils {
 
 
     public static String randomWithCharacters(char[] seed, int length) {
-        final Random random = new Random();
-        return Stream.generate(() -> seed[random.nextInt(seed.length)])
-            .limit(length)
-            .map(String::valueOf)
-            .collect(Collectors.joining(""));
+        return new Random().ints(length, 0, seed.length)
+            .mapToObj(i -> String.valueOf(seed[i]))
+            .collect(Collectors.joining());
     }
 
 }
