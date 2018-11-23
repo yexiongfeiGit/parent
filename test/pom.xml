@@ -10,6 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>test</artifactId>
+	<description>Wokoworks Framework-test for Spring Boot</description>
 
 	<dependencies>
 		<dependency>
