@@ -46,7 +46,7 @@ class TableInfo<T> {
             for (int i = 0; i < columnCount; i++) {
                 columnNames.add(metadata.getColumnName(i + 1));
             }
-            return new TableInfo(columnNames, repository.getDescriptorList());
+            return new TableInfo<>(columnNames, repository.getDescriptorList());
         });
     }
 }
