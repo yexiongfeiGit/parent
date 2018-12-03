@@ -15,7 +15,7 @@ class ComplexCondition implements Condition {
     private String sql;
     private final List<Object> args = new ArrayList<>();
 
-    ComplexCondition(Condition first, boolean or, Condition second) {
+    private ComplexCondition(Condition first, boolean or, Condition second) {
         this.first = first;
         this.or = or;
         this.second = second;

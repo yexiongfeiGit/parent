@@ -13,7 +13,7 @@ class TableInfo<T> {
     private final Map<String, PropertyDescriptor> columnPropertyMap = new HashMap<>();
     private final Object[] emptyArgs = new Object[0];
 
-    TableInfo(List<String> columnNames, List<PropertyDescriptor> descriptorList) {
+    private TableInfo(List<String> columnNames, List<PropertyDescriptor> descriptorList) {
         Converter<String, String> convert = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.LOWER_UNDERSCORE);
         for (String columnName : columnNames) {
             for (PropertyDescriptor propertyDescriptor : descriptorList) {

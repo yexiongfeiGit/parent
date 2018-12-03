@@ -17,7 +17,7 @@ public class JdbcTemplateUtils<T> {
     private JdbcTemplate jdbcTemplate;
     private final RowMapper<T> rowMapper;
 
-    public JdbcTemplateUtils(RowMapper<T> rowMapper) {
+    JdbcTemplateUtils(RowMapper<T> rowMapper) {
         this.rowMapper = rowMapper;
     }
 

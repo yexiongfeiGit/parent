@@ -9,7 +9,6 @@ import com.wokoworks.framework.data.impl.condition.ConditionBuilder;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @author 0x0001
@@ -106,7 +105,7 @@ public class SelectBuilder<T> {
     }
 
     public Page<T> page(int pageNo, int pageSize) {
-        Preconditions.checkArgument(pageNo > 0, "page no must be greater then 0");
+        Preconditions.checkArgument(pageNo > 0, "pageNo must be greater then 0");
 
         final int count = this.findCount();
         final int pageOffset = pageSize * (pageNo - 1);
@@ -131,7 +130,7 @@ public class SelectBuilder<T> {
         if (this.fields.isEmpty()) {
             sql.append(" *");
         } else {
-            sql.append(this.fields.stream().collect(Collectors.joining(",")));
+            sql.append(String.join(",", this.fields));
         }
         sql.append(" FROM ").append(tableName);
 
