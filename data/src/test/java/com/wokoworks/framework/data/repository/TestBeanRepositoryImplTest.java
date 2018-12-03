@@ -1,6 +1,6 @@
 package com.wokoworks.framework.data.repository;
 
-import com.wokoworks.framework.commons.tuple.Tuple;
+import com.wokoworks.framework.commons.vo.Pair;
 import com.wokoworks.framework.data.BaseRepositoryTest;
 import com.wokoworks.framework.data.Page;
 import com.wokoworks.framework.data.Sort;
@@ -15,7 +15,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
-public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
+public class TestBeanRepositoryImplTest extends RepositoryTest {
     @Autowired
     private TestBeanRepository testBeanRepository;
 
@@ -300,7 +300,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
             Assert.assertEquals("content size", 1, page.getData().size());
 
-            assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
+            assertSorts(page.getData(), pair -> pair.getFirst().getAge() <= pair.getSecond().getAge());
         }
 
         // 多页第下一页
@@ -311,7 +311,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("current page", 2, page.getCurrentPageNo());
             Assert.assertEquals("content size", 1, page.getData().size());
 
-            assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
+            assertSorts(page.getData(), pair -> pair.getFirst().getAge() <= pair.getSecond().getAge());
         }
 
         // 多页不完全分割
@@ -321,7 +321,7 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
             Assert.assertEquals("content size", 2, page.getData().size());
-            assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
+            assertSorts(page.getData(), pair -> pair.getFirst().getAge() <= pair.getSecond().getAge());
         }
 
         // 单页完全分割
@@ -331,17 +331,17 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
             Assert.assertEquals("total count", 3, page.getTotalCount());
             Assert.assertEquals("current page", 1, page.getCurrentPageNo());
             Assert.assertEquals("content size", 3, page.getData().size());
-            assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
+            assertSorts(page.getData(), pair -> pair.getFirst().getAge() <= pair.getSecond().getAge());
         }
     }
 
-    private void assertSorts(List<TestBean> beans, Function<Tuple.TwoTuple<TestBean, TestBean>, Boolean> test) {
+    private void assertSorts(List<TestBean> beans, Function<Pair<TestBean, TestBean>, Boolean> test) {
         TestBean prevBean = beans.get(0);
         for (TestBean bean : beans) {
             if (prevBean == bean) {
                 continue;
             }
-            Assert.assertTrue("sort assert", test.apply(Tuple.of(prevBean, bean)));
+            Assert.assertTrue("sort assert", test.apply(Pair.of(prevBean, bean)));
             prevBean = bean;
         }
     }
@@ -498,6 +498,42 @@ public class TestBeanRepositoryImplTest extends BaseRepositoryTest {
         // 查询不到的情况
         {
             final List<TestBean> beans = testBeanRepository.findByAgeGreaterThenEqual(29);
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByNameLike() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%小%");
+            System.out.println("beans " + beans);
+            Assert.assertEquals("record size", 3, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("name like 小", bean.getName().contains("小"));
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%大%");
+            Assert.assertEquals("record size", 0, beans.size());
+        }
+    }
+
+    @Test
+    public void findByNameNotLike() {
+        // 能查询到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%大%");
+            System.out.println("beans " + beans);
+            Assert.assertEquals("record size", 3, beans.size());
+            for (TestBean bean : beans) {
+                Assert.assertTrue("name not like %大%", !bean.getName().contains("大"));
+            }
+        }
+        // 查询不到的情况
+        {
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%小%");
             Assert.assertEquals("record size", 0, beans.size());
         }
     }

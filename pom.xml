@@ -17,6 +17,7 @@
         <module>code-generator</module>
         <module>spring-cloud-starter-client</module>
         <module>spring-cloud-starter-server</module>
+        <module>test</module>
     </modules>
 
     <parent>
@@ -33,6 +34,7 @@
         <java.version>1.8</java.version>
 
         <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+        <spring-cloud-stream.version>Fishtown.RC1</spring-cloud-stream.version>
 
         <fastjson.version>1.2.49</fastjson.version>
         <guava.version>25.1-jre</guava.version>
@@ -63,6 +65,14 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-stream-dependencies</artifactId>
+                <version>${spring-cloud-stream.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>${guava.version}</version>
@@ -83,6 +93,12 @@
             <dependency>
                 <groupId>com.wokoworks.framework</groupId>
                 <artifactId>data</artifactId>
+                <version>${framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.wokoworks.framework</groupId>
+                <artifactId>test</artifactId>
                 <version>${framework.version}</version>
             </dependency>
 
@@ -214,5 +230,16 @@
             <url>http://192.168.21.80:8081/nexus/content/repositories/snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>spring-milestones</id>
+            <name>Spring Milestones</name>
+            <url>https://repo.spring.io/libs-milestone</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
 </project>

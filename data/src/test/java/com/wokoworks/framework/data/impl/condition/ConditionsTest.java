@@ -75,6 +75,28 @@ public class ConditionsTest {
     }
 
     @Test
+    public void like() {
+        final String value = "value";
+        final Condition condition = Conditions.like("name", value);
+        final String sql = condition.getSql();
+        final Object[] args = condition.getArgs();
+
+        assertEquals("sql equal", "name LIKE ?", sql);
+        assertArrayEquals("arg equal", new Object[]{value}, args);
+    }
+
+    @Test
+    public void notLike() {
+        final String value = "value";
+        final Condition condition = Conditions.notLike("name", value);
+        final String sql = condition.getSql();
+        final Object[] args = condition.getArgs();
+
+        assertEquals("sql equal", "name NOT LIKE ?", sql);
+        assertArrayEquals("arg equal", new Object[]{value}, args);
+    }
+
+    @Test
     public void in() {
         final Condition condition = Conditions.in("name", new Object[]{"value"});
         final String sql = condition.getSql();

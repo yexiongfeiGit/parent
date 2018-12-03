@@ -74,4 +74,18 @@ public interface TestBeanRepository extends BaseRepository<TestBean, Integer> {
      * @return
      */
     List<TestBean> findByAgeGreaterThenEqual(int age);
+
+    /**
+     * 查询名字像某个值的用户
+     * @param name
+     * @return
+     */
+    List<TestBean> findByNameLike(String name);
+
+    /**
+     * 查询名字不像某个值的用户
+     * @param name
+     * @return
+     */
+    List<TestBean> findByNameNotLike(String name);
 }

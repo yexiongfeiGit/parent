@@ -61,4 +61,15 @@ public class TestBeanRepositoryImpl extends BaseRepositoryImpl<TestBean, Integer
     public List<TestBean> findByAgeGreaterThenEqual(int age) {
         return select().where(Conditions.greaterThanEquals("age", age)).find();
     }
+
+    @Override
+    public List<TestBean> findByNameLike(String name) {
+        return select().where(Conditions.like("name", name)).find();
+    }
+
+    @Override
+    public List<TestBean> findByNameNotLike(String name) {
+        return select().where(Conditions.notLike("name", name)).find();
+
+    }
 }
