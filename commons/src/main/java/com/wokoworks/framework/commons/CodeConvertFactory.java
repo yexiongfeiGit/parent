@@ -28,7 +28,7 @@ public class CodeConvertFactory {
 
         Class<E> toClass();
 
-        E convert(T t);
+        Optional<E> convert(T t);
     }
 
     public static abstract class AbsCodeConvert<T extends Enum<T>, E extends Enum<E>> implements CodeConvert<T, E> {
@@ -40,6 +40,7 @@ public class CodeConvertFactory {
         public AbsCodeConvert(Class<T> fromClass, Class<E> toClass) {
             this.fromClass = fromClass;
             this.toClass = toClass;
+            init();
         }
 
         @Override
@@ -53,19 +54,18 @@ public class CodeConvertFactory {
         }
 
         @Override
-        public E convert(T t) {
-            E code = convertMap.get(t);
-            if (code == null) {
-                throw new RuntimeException("not support code convert" + t);
-            }
-            return code;
+        public Optional<E> convert(T t) {
+            return Optional.ofNullable(convertMap.get(t));
+        }
+
+        public E convertOrDefault(T t, E def) {
+            return convert(t).orElse(def);
         }
 
         protected void register(T from, E to) {
             convertMap.put(from, to);
         }
 
-        @PostConstruct
         public abstract void init();
     }
 }
