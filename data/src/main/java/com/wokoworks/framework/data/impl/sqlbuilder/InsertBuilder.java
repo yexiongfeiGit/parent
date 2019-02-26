@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author 0x0001
@@ -25,10 +26,13 @@ public final class InsertBuilder<T, K> {
 
     private boolean ignoreIdColumn = true;
 
+    private static final Map<String, TableInfo<?>> TABLE_INFO_CACHE = new ConcurrentHashMap<>();
+
+    @SuppressWarnings("unchecked")
     public InsertBuilder(BaseRepositoryImpl<T, K> repository) {
         idColumnName = repository.getIdColumnName();
         tableName = repository.getTableName();
-        tableInfo = TableInfo.newTableInfo(repository);
+        tableInfo = (TableInfo<T>) TABLE_INFO_CACHE.computeIfAbsent(repository.getTableName(), (k) -> TableInfo.newTableInfo(repository));
         jdbcTemplate = repository.getJdbcTemplate();
     }
 
