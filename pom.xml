@@ -87,7 +87,7 @@
             <dependency>
                 <groupId>com.wokoworks.framework</groupId>
                 <artifactId>commons</artifactId>
-                <version>${project.version}</version>
+                <version>${framework.version}</version>
             </dependency>
 
             <dependency>
