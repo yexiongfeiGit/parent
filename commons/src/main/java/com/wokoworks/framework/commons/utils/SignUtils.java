@@ -31,7 +31,7 @@ public class SignUtils {
 		return Base64.getEncoder().encodeToString(encrypt);
 	}
 
-	public static boolean verify(final Map<String, String[]> argParams, final String secretKey, String sign, String priKey) throws GeneralSecurityException {
+	public static boolean verify(final Map<String, String[]> argParams, final String secretKey, String sign, @NonNull String priKey) throws GeneralSecurityException {
 		String hash = convertParams(argParams, secretKey);
 
 		RSAPrivateKey rsaPrivateKey = RSAEncryption.generatePrivateKey(Base64.getDecoder().decode(priKey));
