@@ -58,6 +58,14 @@ public final class Conditions {
         return notIn(field, args.toArray());
     }
 
+    public static Condition raw(String sql, Collection<?> args) {
+        return raw(sql, args.toArray());
+    }
+
+    public static Condition raw(String sql, Object[] args) {
+        return new RawCondition(sql, args);
+    }
+
     public static Condition or(Condition... conditions) {
         Preconditions.checkNotNull(conditions);
         Preconditions.checkArgument(conditions.length > 0);

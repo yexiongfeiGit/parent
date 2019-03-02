@@ -11,7 +11,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * SignUtils class
@@ -22,28 +21,24 @@ import java.util.stream.Collectors;
 public class SignUtils {
 
 	public static String sign(final Map<String, String[]> argParams, final String secretKey, @NonNull String pubKey) throws GeneralSecurityException {
-		String hash = convertParams(argParams, secretKey);
+		final String hash = convertParams(argParams, secretKey);
 
-		RSAPublicKey rsaPublicKey = RSAEncryption.generatePublicKey(Base64.getDecoder().decode(pubKey));
-		RSAEncryption rsaEncryption = new RSAEncryption(rsaPublicKey, null);
-		byte[] encrypt = rsaEncryption.encrypt(hash.getBytes());
+		final RSAPublicKey rsaPublicKey = RSAEncryption.generatePublicKey(Base64.getDecoder().decode(pubKey));
+		final RSAEncryption rsaEncryption = new RSAEncryption(rsaPublicKey, null);
+		final byte[] encrypt = rsaEncryption.encrypt(hash.getBytes());
 
 		return Base64.getEncoder().encodeToString(encrypt);
 	}
 
 	public static boolean verify(final Map<String, String[]> argParams, final String secretKey, String sign, @NonNull String priKey) throws GeneralSecurityException {
-		String hash = convertParams(argParams, secretKey);
+		final String hash = convertParams(argParams, secretKey);
 
-		RSAPrivateKey rsaPrivateKey = RSAEncryption.generatePrivateKey(Base64.getDecoder().decode(priKey));
-		RSAEncryption rsaEncryption = new RSAEncryption(null, rsaPrivateKey);
+		final RSAPrivateKey rsaPrivateKey = RSAEncryption.generatePrivateKey(Base64.getDecoder().decode(priKey));
+		final RSAEncryption rsaEncryption = new RSAEncryption(null, rsaPrivateKey);
 
-		byte[] encrypt = rsaEncryption.decrypt(Base64.getDecoder().decode(sign));
-		String decodeHash = new String(encrypt);
-		if (hash.equals(decodeHash)) {
-			return true;
-		}
-
-		return false;
+		final byte[] encrypt = rsaEncryption.decrypt(Base64.getDecoder().decode(sign));
+		final String decodeHash = new String(encrypt);
+		return hash.equals(decodeHash);
 	}
 
 
@@ -51,7 +46,7 @@ public class SignUtils {
 		final Map<String, String[]> params = Maps.newHashMap(argParams);
 		params.remove("sign");
 
-		List<String> lists = Lists.newArrayList();
+		final List<String> lists = Lists.newArrayListWithCapacity(params.size() + 1);
 		params.forEach((key, values) -> {
 			for (String value : values) {
 				lists.add(key + "=" + value);
@@ -59,7 +54,9 @@ public class SignUtils {
 		});
 
 		lists.sort(String::compareTo);
-		String signStr = lists.stream().collect(Collectors.joining("&")) + "&" + secretKey;
+		lists.add(secretKey);
+
+		final String signStr = String.join("&", lists);
 		return HashUtils.sha256(signStr);
 	}
 }
