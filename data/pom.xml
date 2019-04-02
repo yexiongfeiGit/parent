@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>data</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${framework.version}</version>
     <packaging>jar</packaging>
 
     <name>data</name>
@@ -13,7 +13,7 @@
     <parent>
         <groupId>com.wokoworks.framework</groupId>
         <artifactId>parent</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>0.0.2-SNAPSHOT</version>
     </parent>
 
     <dependencies>
