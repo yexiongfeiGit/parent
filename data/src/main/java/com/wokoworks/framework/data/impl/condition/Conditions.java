@@ -5,6 +5,7 @@ import com.google.common.base.Preconditions;
 import com.wokoworks.framework.data.Condition;
 
 import java.util.Collection;
+import java.util.Collections;
 
 /**
  * @author 0x0001
@@ -64,6 +65,10 @@ public final class Conditions {
 
     public static Condition raw(String sql, Object[] args) {
         return new RawCondition(sql, args);
+    }
+
+    public static Condition raw(String sql) {
+        return new RawCondition(sql, new Object[]{});
     }
 
     public static Condition or(Condition... conditions) {

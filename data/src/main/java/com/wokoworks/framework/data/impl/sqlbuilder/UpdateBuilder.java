@@ -36,6 +36,11 @@ public class UpdateBuilder<T> {
         return this;
     }
 
+    public UpdateBuilder<T> setRawField(String field, Object... value) {
+        fieldValueList.add(new FieldValue(field, false, value));
+        return this;
+    }
+
     public UpdateBuilder<T> setRawField(String raw) {
         fieldValueList.add(new FieldValue(raw, true, null));
         return this;
