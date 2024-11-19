@@ -219,27 +219,42 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <!--<repository>-->
-        <!--<id>pundix-releases</id>-->
-        <!--<url>http://192.168.21.80:8081/nexus/content/repositories/releases/</url>-->
-        <!--</repository>-->
+<!--    <distributionManagement>-->
+<!--        &lt;!&ndash;<repository>&ndash;&gt;-->
+<!--        &lt;!&ndash;<id>pundix-releases</id>&ndash;&gt;-->
+<!--        &lt;!&ndash;<url>http://192.168.21.80:8081/nexus/content/repositories/releases/</url>&ndash;&gt;-->
+<!--        &lt;!&ndash;</repository>&ndash;&gt;-->
 
-        <snapshotRepository>
-            <id>pundix-snapshots</id>
-            <url>http://192.168.21.80:8081/nexus/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+<!--        <snapshotRepository>-->
+<!--            <id>pundix-snapshots</id>-->
+<!--            <url>http://192.168.21.80:8081/nexus/content/repositories/snapshots/</url>-->
+<!--        </snapshotRepository>-->
+<!--    </distributionManagement>-->
+
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/libs-milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>false</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
+
 
     <repositories>
         <repository>
             <id>spring-milestones</id>
             <name>Spring Milestones</name>
-            <url>https://repo.spring.io/libs-milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
+            <url>https://repo.spring.io/milestone</url>
+        </repository>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>https://repo.spring.io/snapshot</url>
         </repository>
     </repositories>
+
 
 </project>
