@@ -43,7 +43,7 @@ public class BatchFetcherTest {
                     personList.add(person);
                 }
             }
-            // 模拟数据库并不是通过传入id顺序返回的这个事实
+            // The analog database is not passed in id The facts returned in order
             Collections.shuffle(personList);
             return personList;
         });

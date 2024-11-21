@@ -15,7 +15,7 @@ public final class HashUtils {
     }
 
     /**
-     * @deprecated md5 算法不再安全,推荐使用sha256之类算法替代, 密码计算推荐使用 bcrypt之类的方式替换
+     * @deprecated md5 The algorithm is no longer safe,Recommendation sha256 Algorithm replacement, Password calculation recommended bcrypt Replace it in ways like
      */
     @Deprecated
     public static String md5(CharSequence chars) {
@@ -23,7 +23,7 @@ public final class HashUtils {
     }
 
     /**
-     * @deprecated sha1 算法不再安全,推荐使用sha256之类算法替代, 密码计算推荐使用 bcrypt之类的方式替换
+     * @deprecated sha1 The algorithm is no longer safe,Recommendation sha256 Algorithm replacement, Password calculation recommended bcrypt Replace it in ways like
      */
     @Deprecated
     public static String sha1(CharSequence chars) {

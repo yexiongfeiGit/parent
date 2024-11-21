@@ -14,15 +14,15 @@ public final class RandomUtils {
     }
 
     /**
-     * 数字
+     * number
      */
     public static final String RANDOM_DIGITAL = "0123456789";
     /**
-     * 字母
+     * letter
      */
     public static final String RANDOM_LETTER = "abcdefghighkilmnopqrstuvwxyz";
     /**
-     * 字母加数字
+     * Letter plus numbers
      */
     public static final String RANDOM_LETTER_DIGITAL = RANDOM_LETTER + RANDOM_DIGITAL;
 

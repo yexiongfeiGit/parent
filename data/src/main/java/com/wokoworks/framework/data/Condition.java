@@ -10,23 +10,23 @@ import java.util.Objects;
 public interface Condition {
 
     /**
-     * 获取sql语句
+     * Obtain sql Sentence
      *
-     * @return 对应条件生成的sql片段
+     * @return Corresponding conditions sql Clip
      */
     String getSql();
 
     /**
-     * 获取参数列表
+     * List of parameters
      *
-     * @return 对应条件需要的参数列表
+     * @return List of parameters required by the corresponding conditions
      */
     Object[] getArgs();
 
     /**
-     * 两个条件执行and拼接
+     * Two conditions for execution and Stitch
      *
-     * @param condition 第二个条件
+     * @param condition Second condition
      * @return
      */
     default Condition and(Condition condition) {
@@ -34,9 +34,9 @@ public interface Condition {
     }
 
     /**
-     * 两个条件执行or拼接
+     * Two conditions for execution or Stitch
      *
-     * @param condition 第二个条件
+     * @param condition Second condition
      * @return
      */
     default Condition or(Condition condition) {

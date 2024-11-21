@@ -21,11 +21,11 @@ public class Resp<T> {
 	}
 
 	/**
-	 * 构建Resp对象
+	 * Build Resp Object
 	 *
-	 * @param respCode 响应代码 (只支持枚举)
-	 * @param data     响应数据
-	 * @param <T>      响应的数据类型
+	 * @param respCode Response code (Only support enumeration)
+	 * @param data     Response data
+	 * @param <T>      Response data type
 	 * @return
 	 */
 	public static <T> Resp<T> make(RespCode respCode, T data) {
@@ -33,10 +33,10 @@ public class Resp<T> {
 	}
 
 	/**
-	 * 构建Resp对象
+	 * Build Resp Object
 	 *
-	 * @param respCode 响应代码 (只支持枚举)
-	 * @param <T>      响应的数据类型
+	 * @param respCode Response code (Only support enumeration)
+	 * @param <T>      Response data type
 	 * @return
 	 */
 	public static <T> Resp<T> make(RespCode respCode) {
@@ -44,16 +44,16 @@ public class Resp<T> {
 	}
 
 	/**
-	 * 构建Resp对象
+	 * Build Resp Object
 	 *
-	 * @param respCode 响应代码 (只支持枚举)
-	 * @param msg      响应消息
-	 * @param data     响应数据
-	 * @param <T>      data的类型
+	 * @param respCode Response code (Only support enumeration)
+	 * @param msg      Response message
+	 * @param data     Response data
+	 * @param <T>      data Type
 	 * @return
 	 */
 	public static <T> Resp<T> make(RespCode respCode, String msg, T data) {
-		// 检查只支持枚举
+		// Check only support enumeration
 		Preconditions.checkArgument(respCode.getClass().isEnum(), "resp code must be enum");
 		return make(respCode.getCode(), msg, data);
 	}

@@ -26,7 +26,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
         Assert.assertTrue("not found", optional.isPresent());
 
         optional.ifPresent(bean -> {
-            Assert.assertEquals("name equals", "小明", bean.getName());
+            Assert.assertEquals("name equals", "Xiaoming", bean.getName());
             Assert.assertEquals("age equals", 28, bean.getAge());
             Assert.assertEquals("dt equals", 2, bean.getDt());
         });
@@ -56,7 +56,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             Assert.assertTrue("id check", ids.containsAll(Arrays.asList(1, 2)));
 
             final Set<String> names = beans.stream().map(TestBean::getName).collect(Collectors.toSet());
-            Assert.assertTrue("name check", names.containsAll(Arrays.asList("小明", "小红")));
+            Assert.assertTrue("name check", names.containsAll(Arrays.asList("Xiaoming", "Little red")));
 
             final Set<Integer> ages = beans.stream().map(TestBean::getAge).collect(Collectors.toSet());
             Assert.assertTrue("age check", ages.containsAll(Arrays.asList(28, 18)));
@@ -91,7 +91,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
     @Test
     public void saveNoId() {
         final TestBean testBean = new TestBean();
-        testBean.setName("小白");
+        testBean.setName("noob");
         testBean.setAge(20);
         testBean.setDt(System.currentTimeMillis());
 
@@ -195,7 +195,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findAll() {
-        // 不排序
+        // Not sort
         {
             final List<TestBean> beans = testBeanRepository.findAll();
             Assert.assertEquals("all db size equals", 3, beans.size());
@@ -224,7 +224,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             }
         }
 
-        // 多个列排序
+        // Multiple columns
         {
             final List<TestBean> beans = testBeanRepository.findAll(
                 Sort.of("age", Sort.Direction.DESC),
@@ -247,7 +247,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findAllWithPage() {
-        // 多页完全分割
+        // Multi -pages are completely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(null, 1, 1);
             Assert.assertEquals("total page", 3, page.getTotalPage());
@@ -257,7 +257,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             Assert.assertEquals("content size", 1, page.getData().size());
         }
 
-        // 多页第下一页
+        // Multi -page first page
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(null, 2, 1);
             Assert.assertEquals("total page", 3, page.getTotalPage());
@@ -267,7 +267,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             Assert.assertEquals("content size", 1, page.getData().size());
         }
 
-        // 多页不完全分割
+        // Page is incompletely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(null, 1, 2);
             Assert.assertEquals("total page", 2, page.getTotalPage());
@@ -277,7 +277,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             Assert.assertEquals("content size", 2, page.getData().size());
         }
 
-        // 单页完全分割
+        // Single page is completely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(null, 1, 3);
             Assert.assertEquals("total page", 1, page.getTotalPage());
@@ -293,7 +293,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
     public void findAllWithPageAndSort() {
         List<Sort> sorts = new ArrayList<>();
         sorts.add(Sort.of("age", Sort.Direction.ASC));
-        // 多页完全分割
+        // Multi -pages are completely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(sorts, 1, 1);
             Assert.assertEquals("total page", 3, page.getTotalPage());
@@ -304,7 +304,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
         }
 
-        // 多页第下一页
+        // Multi -page first page
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(sorts, 2, 1);
             Assert.assertEquals("total page", 3, page.getTotalPage());
@@ -315,7 +315,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
         }
 
-        // 多页不完全分割
+        // Page is incompletely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(sorts, 1, 2);
             Assert.assertEquals("total page", 2, page.getTotalPage());
@@ -325,7 +325,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             assertSorts(page.getData(), pair -> pair.first.getAge() <= pair.second.getAge());
         }
 
-        // 单页完全分割
+        // Single page is completely divided
         {
             final Page<TestBean> page = testBeanRepository.findAllWithPage(sorts, 1, 3);
             Assert.assertEquals("total page", 1, page.getTotalPage());
@@ -349,7 +349,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void updateNameById() {
-        // 更新存在对象
+        // Update
         {
             final int id = 1;
             final String name = "name" + System.currentTimeMillis();
@@ -364,7 +364,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             });
         }
 
-        // 更新不存在对象
+        // Update does not exist
         {
             final int id = 100;
             final String name = "name" + System.currentTimeMillis();
@@ -378,7 +378,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByNameOrAge() {
-        final String name = "小明";
+        final String name = "Xiaoming";
         final int age = 20;
         final List<TestBean> beans = testBeanRepository.findByNameOrAge(name, age);
         Assert.assertEquals("bean size", 2, beans.size());
@@ -390,9 +390,9 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByNameAndAge() {
-        // 能查询到的情况
+        // What can query
         {
-            final String name = "小明";
+            final String name = "Xiaoming";
             final int age = 28;
             final List<TestBean> beans = testBeanRepository.findByNameAndAge(name, age);
             Assert.assertEquals("bean size", 1, beans.size());
@@ -402,9 +402,9 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             }
         }
 
-        // 查询不到的情况
+        // The situation where the query is not available
         {
-            final String name = "小明";
+            final String name = "Xiaoming";
             final int age = 29;
             final List<TestBean> beans = testBeanRepository.findByNameAndAge(name, age);
             Assert.assertEquals("bean size", 0, beans.size());
@@ -413,9 +413,9 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByNameAndAge1() {
-        // 能查询到的情况
+        // What can query
         {
-            final String name = "小明";
+            final String name = "Xiaoming";
             final int age = 28;
             final List<TestBean> beans = testBeanRepository.findByNameAndAge1(name, age);
             Assert.assertEquals("bean size", 1, beans.size());
@@ -425,9 +425,9 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             }
         }
 
-        // 查询不到的情况
+        // The situation where the query is not available
         {
-            final String name = "小明";
+            final String name = "Xiaoming";
             final int age = 29;
             final List<TestBean> beans = testBeanRepository.findByNameAndAge1(name, age);
             Assert.assertEquals("bean size", 0, beans.size());
@@ -436,7 +436,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByAgeLessThen() {
-        // 能查询到的情况
+        // What can query
         {
             final List<TestBean> beans = testBeanRepository.findByAgeLessThen(28);
             Assert.assertEquals("record size", 2, beans.size());
@@ -444,7 +444,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
                 Assert.assertTrue("age < 28", bean.getAge() < 28);
             }
         }
-        // 查询不到的情况
+        // The situation where the query is not available
         {
             final List<TestBean> beans = testBeanRepository.findByAgeLessThen(18);
             Assert.assertEquals("record size", 0, beans.size());
@@ -453,7 +453,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByAgeLessThenEqual() {
-        // 能查询到的情况
+        // What can query
         {
             final List<TestBean> beans = testBeanRepository.findByAgeLessThenEqual(18);
             Assert.assertEquals("record size", 1, beans.size());
@@ -461,7 +461,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
                 Assert.assertTrue("age <= 18", bean.getAge() <= 18);
             }
         }
-        // 查询不到的情况
+        // The situation where the query is not available
         {
             final List<TestBean> beans = testBeanRepository.findByAgeLessThenEqual(17);
             Assert.assertEquals("record size", 0, beans.size());
@@ -470,7 +470,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByAgeGreaterThen() {
-        // 能查询到的情况
+        // What can query
         {
             final List<TestBean> beans = testBeanRepository.findByAgeGreaterThen(18);
             Assert.assertEquals("record size", 2, beans.size());
@@ -479,7 +479,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
             }
         }
 
-        // 查询不到的情况
+        // The situation where the query is not available
         {
             final List<TestBean> beans = testBeanRepository.findByAgeGreaterThen(28);
             Assert.assertEquals("record size", 0, beans.size());
@@ -488,7 +488,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByAgeGreaterThenEqual() {
-        // 能查询到的情况
+        // What can query
         {
             final List<TestBean> beans = testBeanRepository.findByAgeGreaterThenEqual(18);
             Assert.assertEquals("record size", 3, beans.size());
@@ -496,7 +496,7 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
                 Assert.assertTrue("age >= 18", bean.getAge() >= 18);
             }
         }
-        // 查询不到的情况
+        // The situation where the query is not available
         {
             final List<TestBean> beans = testBeanRepository.findByAgeGreaterThenEqual(29);
             Assert.assertEquals("record size", 0, beans.size());
@@ -505,36 +505,36 @@ public class TestBeanRepositoryImplTest extends RepositoryTest {
 
     @Test
     public void findByNameLike() {
-        // 能查询到的情况
+        // What can query
         {
-            final List<TestBean> beans = testBeanRepository.findByNameLike("%小%");
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%Small%");
             System.out.println("beans " + beans);
             Assert.assertEquals("record size", 3, beans.size());
             for (TestBean bean : beans) {
-                Assert.assertTrue("name like 小", bean.getName().contains("小"));
+                Assert.assertTrue("name like Small", bean.getName().contains("Small"));
             }
         }
-        // 查询不到的情况
+        // The situation where the query is not available
         {
-            final List<TestBean> beans = testBeanRepository.findByNameLike("%大%");
+            final List<TestBean> beans = testBeanRepository.findByNameLike("%big%");
             Assert.assertEquals("record size", 0, beans.size());
         }
     }
 
     @Test
     public void findByNameNotLike() {
-        // 能查询到的情况
+        // What can query
         {
-            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%大%");
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%big%");
             System.out.println("beans " + beans);
             Assert.assertEquals("record size", 3, beans.size());
             for (TestBean bean : beans) {
-                Assert.assertTrue("name not like %大%", !bean.getName().contains("大"));
+                Assert.assertTrue("name not like %big%", !bean.getName().contains("big"));
             }
         }
-        // 查询不到的情况
+        // The situation where the query is not available
         {
-            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%小%");
+            final List<TestBean> beans = testBeanRepository.findByNameNotLike("%Small%");
             Assert.assertEquals("record size", 0, beans.size());
         }
     }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 /**
- * java 元组工具类
+ * java Metropolitan Tool Class
  * @author 0x0001
  */
 public class Tuple {

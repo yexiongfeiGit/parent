@@ -147,7 +147,7 @@ public class IndexController {
                     columns.add(column);
                 }
 
-                // 测试输出到 标准输出, 调试用
+                // Test output to Standard output, Debugging
                 if (vo) {
                     template.process(model, System.out);
 

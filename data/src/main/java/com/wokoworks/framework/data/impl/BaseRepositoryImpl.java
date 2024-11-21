@@ -60,7 +60,7 @@ public abstract class BaseRepositoryImpl<T, K> implements BaseRepository<T, K>, 
     // --------------------------- abstract methods
 
     /**
-     * 获取bean类
+     * Obtain bean kind
      *
      * @return
      */

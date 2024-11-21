@@ -1,7 +1,7 @@
 package com.wokoworks.framework.commons.utils;
 
 /**
- * 字节单位转换
+ * Byte unit conversion
  *
  * @author 0x0001
  * @date 2018-05-08

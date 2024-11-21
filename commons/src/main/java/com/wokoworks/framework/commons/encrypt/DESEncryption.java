@@ -17,7 +17,7 @@ import java.security.spec.InvalidKeySpecException;
 
 /**
  * https://zh.wikipedia.org/wiki/%E8%B3%87%E6%96%99%E5%8A%A0%E5%AF%86%E6%A8%99%E6%BA%96
- * DES现在已经不是一种安全的加密方法，主要因为它使用的56位密钥过短。1999年1月，distributed.net与电子前哨基金会合作，在22小时15分钟内即公开破解了一个DES密钥。也有一些分析报告提出了该算法的理论上的弱点，虽然在实际中难以应用。为了提供实用所需的安全性，可以使用DES的派生算法3DES来进行加密，虽然3DES也存在理论上的攻击方法。在2001年，DES作为一个标准已经被高级加密标准（AES）所取代。另外，DES已经不再作为国家标准科技协会（前国家标准局）的一个标准。
+ * DES It's not a safe encryption method now，Mainly because it uses 56 The key is too short。1999 Year 1 moon，distributed.net Cooperate with the Electronic Outpost Foundation，exist 22 Hour 15 In the minute, a public cracked one publicly DES Key。There are also some analysis reports that the theoretical weakness of the algorithm proposes，Although it is difficult to apply in practice。To provide practical safety required，Be available DES Derived algorithm 3DES Called，Although 3DES There are also theoretical attack methods。exist 2001 Year，DES As a standard, it has been high -level encryption standard（AES）Replace。in addition，DES No longer as the National Standard Technology Association（Former Standard Agency）A standard。
  *
  * @author 0x0001
  */
@@ -68,10 +68,10 @@ public class DESEncryption {
     private Cipher getCipher(byte[] password, Mode mode) throws InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException, NoSuchPaddingException {
         SecureRandom random = new SecureRandom();
         DESKeySpec desKey = new DESKeySpec(password);
-        //创建一个密匙工厂，然后用它把DESKeySpec转换成
+        //Create a key factory，Then use it to put it DESKeySpec Convert
         SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DES");
         SecretKey secretkey = keyFactory.generateSecret(desKey);
-        //Cipher对象实际完成加密操作
+        //Cipher The object actually completes the encryption operation
         Cipher cipher = Cipher.getInstance("DES");
         if (mode == Mode.ENCRYPT) {
             cipher.init(Cipher.ENCRYPT_MODE, secretkey, random);

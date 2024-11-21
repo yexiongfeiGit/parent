@@ -11,14 +11,14 @@ import java.io.Serializable;
 public interface RespCode extends Serializable {
 
 	/**
-	 * 获取返回错误码
+	 * Get the return error code
 	 *
 	 * @return code
 	 */
 	int getCode();
 
 	/**
-	 * 获取返回错误消息
+	 * Get the error message
 	 *
 	 * @return msg
 	 */
@@ -27,37 +27,37 @@ public interface RespCode extends Serializable {
 	enum Default implements RespCode {
 
 		/**
-		 * 成功
+		 * success
 		 */
 		SUCCESS(200, "success"),
 
 		/**
-		 * 未登陆
+		 * Not login
 		 */
 		NOT_LOGIN(300, "not login"),
 
 		/**
-		 * 未授权
+		 * Unauthorized
 		 */
 		PERMISSION_DENIED(301, "permission denied"),
 
 		/**
-		 * 客户端参数错误
+		 * Client parameter error
 		 */
 		CLIENT_PARAM_ERROR(400, "param error"),
 
 		/**
-		 * 加密解密错误
+		 * Encryption and decryption
 		 */
 		BAD_REQUEST(401, "bad request"),
 
 		/**
-		 * 找不到接口
+		 * Can't find the interface
 		 */
 		NOT_FOUND_URL(404, "not found"),
 
 		/**
-		 * 服务器内部错误
+		 * Internal server error
 		 */
 		SERVER_ERROR(500, "server error"),
 		;

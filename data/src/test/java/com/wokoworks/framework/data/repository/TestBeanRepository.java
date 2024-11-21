@@ -7,83 +7,83 @@ import java.util.List;
 public interface TestBeanRepository extends BaseRepository<TestBean, Integer> {
 
     /**
-     * 通过id更新名字
+     * pass id Update name
      *
-     * @param name 需要设置的名称
-     * @param id   需要更新对象的id
-     * @return 更新条数
+     * @param name The name that needs to be set
+     * @param id   Need to update the object id
+     * @return Number of updates
      */
     int updateNameById(String name, int id);
 
     /**
-     * 通过名字或者年龄查询
+     * Inquiry through name or age
      *
-     * @param name 需要查询的名称
-     * @param age  需要查询的年龄
-     * @return 符合条件的记录
+     * @param name The name that needs to be query
+     * @param age  Age to query
+     * @return Eligible records
      */
     List<TestBean> findByNameOrAge(String name, int age);
 
     /**
-     * 通过名字和年龄查询
+     * Inquiry through names and age
      *
-     * @param name 需要查询到名字
-     * @param age  需要查询的年龄
-     * @return 符合条件的记录
+     * @param name Need to query the name
+     * @param age  Age to query
+     * @return Eligible records
      */
     List<TestBean> findByNameAndAge(String name, int age);
 
 
     /**
-     * 通过名字和年龄查询
+     * Inquiry through names and age
      *
-     * @param name 需要查询到名字
-     * @param age  需要查询的年龄
-     * @return 符合条件的记录
+     * @param name Need to query the name
+     * @param age  Age to query
+     * @return Eligible records
      */
     List<TestBean> findByNameAndAge1(String name, int age);
 
     /**
-     * 查询年龄小于指定值的对象
+     * Query the object of age less than the specified value
      *
-     * @param age 年龄
+     * @param age age
      * @return
      */
     List<TestBean> findByAgeLessThen(int age);
 
     /**
-     * 查询年龄小于等于某个值的对象
+     * Query objects that age less than or equal to a certain value
      *
-     * @param age 年龄
+     * @param age age
      * @return
      */
     List<TestBean> findByAgeLessThenEqual(int age);
 
     /**
-     * 查询年龄大于某个值的对象
+     * Query objects with greater age than a certain value
      *
-     * @param age 年龄
+     * @param age age
      * @return
      */
     List<TestBean> findByAgeGreaterThen(int age);
 
     /**
-     * 查询年龄大于等于某个值的用户
+     * Users who are older than or equal to a certain value
      *
-     * @param age 年龄
+     * @param age age
      * @return
      */
     List<TestBean> findByAgeGreaterThenEqual(int age);
 
     /**
-     * 查询名字像某个值的用户
+     * Query the name of the name like a certain value
      * @param name
      * @return
      */
     List<TestBean> findByNameLike(String name);
 
     /**
-     * 查询名字不像某个值的用户
+     * The query name is not like a user with a certain value
      * @param name
      * @return
      */

@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
 
     /**
-     * 通过注释内容生成枚举的正则表达式匹配规则
+     * Matching the regular expression matching rules through the comment content
      */
     private static final Pattern ENUM_PATTERN = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d+\\:|$)");
 
@@ -255,7 +255,7 @@ public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
                 .peek(this::tryMakeEnum)
                 .forEach(this::addCondition);
 
-            // 私有构造器
+            // Private constructor
             conditionBuilder.addMethod(MethodSpec.constructorBuilder().addModifiers(Modifier.PRIVATE).build());
 
             subTypes.add(conditionBuilder.build());
@@ -284,8 +284,8 @@ public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
                 .returns(returnType)
                 .build());
 
-            enumBuilder.addField(FieldSpec.builder(TypeName.INT, "code", Modifier.PUBLIC, Modifier.FINAL).addJavadoc("程序使用代码,会存储在数据库中\n").build())
-                .addField(FieldSpec.builder(String.class, "remark", Modifier.PUBLIC, Modifier.FINAL).addJavadoc("可读性备注\n").build());
+            enumBuilder.addField(FieldSpec.builder(TypeName.INT, "code", Modifier.PUBLIC, Modifier.FINAL).addJavadoc("Program use code,Will be stored in the database\n").build())
+                .addField(FieldSpec.builder(String.class, "remark", Modifier.PUBLIC, Modifier.FINAL).addJavadoc("Readable remarks\n").build());
 
             enumBuilder.addMethod(MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PRIVATE)
@@ -301,7 +301,7 @@ public class VoTemplate extends AbstractTemplate<VoTemplate.Model> {
     }
 
     public static void main(String[] args) {
-        String str = "分类ID 1: New分类1 2: Old 分类2";
+        String str = "Classification ID 1: New Classification 1 2: Old Classification 2";
         final Pattern pattern = Pattern.compile("(\\d+)\\:\\s*([\\w]+)(.*?)(?=\\d\\:|$)");
 
         final Matcher matcher = pattern.matcher(str);

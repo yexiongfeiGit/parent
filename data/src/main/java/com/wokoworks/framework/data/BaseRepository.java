@@ -13,90 +13,90 @@ import java.util.stream.Collectors;
  */
 public interface BaseRepository<T, K> {
     /**
-     * 保存对象
+     * Saving object
      *
-     * @param t         需要保存的对象
-     * @param keyHolder 主键保存
-     * @return 数据库影响行数
+     * @param t         Object to be preserved
+     * @param keyHolder Primary keys
+     * @return Database influence rows
      */
     int save(T t, KeyHolder keyHolder);
 
     /**
-     * 保存对象, 不需要返回id
+     * Saving object, No need to return id
      *
-     * @param t 需要保存的对象
-     * @return 数据库影响行数
+     * @param t Object to be preserved
+     * @return Database influence rows
      */
     default int save(T t) {
         return save(t, null);
     }
 
     /**
-     * 通过id查找对象
+     * pass id Search object
      *
-     * @param id 主键
-     * @return 查询到的对象信息
+     * @param id Primary key
+     * @return Object information
      */
     Optional<T> findById(K id);
 
     /**
-     * 通过id集合查询列表
+     * pass id Collection query list
      *
-     * @param ids id集合
-     * @return 查询到的对象集合
+     * @param ids id gather
+     * @return Object collection that is found out
      */
     List<T> findInIds(Collection<? extends K> ids);
 
     /**
-     * 通过id删除对象
+     * pass id Delete
      *
-     * @param id 主键
-     * @return 数据库影响行数
+     * @param id Primary key
+     * @return Database influence rows
      */
     int deleteById(K id);
 
     /**
-     * 统计表记录行数
+     * Statistical table record row
      *
-     * @return 表记录行数
+     * @return Table record row number
      */
     int totalCount();
 
 
     /**
-     * 查询所有数据
+     * Query all data
      *
-     * @param sorts 排序方式
-     * @return 表里所有的记录
+     * @param sorts sort by
+     * @return All records in the table
      */
     List<T> findAll(Sort... sorts);
 
 
     /**
-     * 查询所有数据,通过分页返回
+     * Query all data,Return through pages
      *
-     * @param sorts  排序方式
-     * @param pageNo 第几页
-     * @param limit  分页条数
+     * @param sorts  sort by
+     * @param pageNo Page
+     * @param limit  Paging number
      * @return
      */
     Page<T> findAllWithPage(List<Sort> sorts, int pageNo, int limit);
 
 
     /**
-     * 批量保存数据,并提取自增id
+     * Batch save data,And extract self -increase id
      *
-     * @param list      需要保存的对象列表
-     * @param keyHolder 需要保留自增主键的holder
-     * @return 影响行数
+     * @param list      List of objects that need to be preserved
+     * @param keyHolder Need to keep the self -increase main key holder
+     * @return Influence row
      */
     int[] batchSave(List<T> list, KeyHolder keyHolder);
 
     /**
-     * 批量保存数据,不需要提取自增id
+     * Batch save data,No need to extract self -increase id
      *
-     * @param list 需要保存的对象列表
-     * @return 影响行数
+     * @param list List of objects that need to be preserved
+     * @return Influence row
      */
     default int[] batchSave(List<T> list) {
         return batchSave(list, null);
@@ -104,7 +104,7 @@ public interface BaseRepository<T, K> {
 
 
     /**
-     * 设置id工具方法
+     * set up id Tool method
      *
      * @param data
      * @param keyHolder
@@ -122,7 +122,7 @@ public interface BaseRepository<T, K> {
     }
 
     /**
-     * id设置接口
+     * id Set interface
      *
      * @param <T>
      * @param <K>
@@ -130,7 +130,7 @@ public interface BaseRepository<T, K> {
     @FunctionalInterface
     interface IDSetter<T, K> {
         /**
-         * 设置id
+         * set up id
          *
          * @param data
          * @param id

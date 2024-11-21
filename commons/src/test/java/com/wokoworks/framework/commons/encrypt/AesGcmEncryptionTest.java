@@ -9,12 +9,12 @@ import java.security.SecureRandom;
 import static org.junit.Assert.assertEquals;
 
 /**
- * aes gcm 加解密测试, oracle jvm 需要下载jar替换才能正常运行, https://backstage.forgerock.com/knowledge/kb/article/a17171105
+ * aes gcm Follow -up test, oracle jvm Need to download jar Replace it to run normally, https://backstage.forgerock.com/knowledge/kb/article/a17171105
  * java8 http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html
  * java7 http://www.oracle.com/technetwork/java/javase/downloads/jce-7-download-432124.html
  * java6 http://www.oracle.com/technetwork/java/javase/downloads/jce-6-download-429243.html
  * <p>
- * 下载zip文件,替换 $JAVA_HOME/jre/lib/security/里的 `local_policy.jar`, `US_export_policy.jar`
+ * download zip document,replace $JAVA_HOME/jre/lib/security/Library `local_policy.jar`, `US_export_policy.jar`
  */
 public class AesGcmEncryptionTest {
 
@@ -49,10 +49,10 @@ public class AesGcmEncryptionTest {
 
         int[] keyLength = new int[]{128, 192, 256};
 
-        // 128 bit 对应byte长度
+        // 128 bit correspond byte length
         final int i = aesGcmEncryption.byteSizeLength(AuthenticatedEncryption.STRENGTH_HIGH);
         assertEquals(16, i);
-        // 256 bit 对应byte长度
+        // 256 bit correspond byte length
         final int i1 = aesGcmEncryption.byteSizeLength(AuthenticatedEncryption.STRENGTH_VERY_HIGH);
         assertEquals(32, i1);
 

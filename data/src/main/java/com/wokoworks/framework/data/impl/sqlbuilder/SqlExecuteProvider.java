@@ -7,16 +7,16 @@ import com.wokoworks.framework.data.impl.JdbcTemplateUtils;
  */
 public interface SqlExecuteProvider<T> {
     /**
-     * 获取对应表名
+     * Get the corresponding table name
      *
-     * @return 要操作的表的名称
+     * @return The name of the table to be operated
      */
     String getTableName();
 
     /**
-     * 获取jdbc template操作工具对象
+     * Obtain jdbc template Operating tool object
      *
-     * @return 对应的jdbc操作工具对象
+     * @return Corresponding jdbc Operating tool object
      */
     JdbcTemplateUtils<T> getJdbcTemplateUtils();
 }

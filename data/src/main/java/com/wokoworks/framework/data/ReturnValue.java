@@ -32,7 +32,7 @@ public class ReturnValue<T, E extends Enum> implements Serializable {
     }
 
     public static <T, E extends Enum> ReturnValue<T, E> withError(E error) {
-        // 回滚事务
+        // Rollback
         try {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         } catch (NoTransactionException e) {

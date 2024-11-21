@@ -8,7 +8,7 @@ import java.io.OutputStream;
  */
 public interface Template<T> {
     /**
-     * 模板处理方法
+     * Template processing method
      * @param model
      * @param out
      */
